@@ -3,35 +3,18 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "TamperMonkey", "http://localhost:55430", "{832C5031-EB9F-4D6F-BE95-2A5893B04D81}"
-	ProjectSection(WebsiteProperties) = preProject
-		UseIISExpress = "true"
-		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.5.1"
-		Debug.AspNetCompiler.VirtualPath = "/localhost_55430"
-		Debug.AspNetCompiler.PhysicalPath = "TamperMonkey\"
-		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_55430\"
-		Debug.AspNetCompiler.Updateable = "true"
-		Debug.AspNetCompiler.ForceOverwrite = "true"
-		Debug.AspNetCompiler.FixedNames = "false"
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.VirtualPath = "/localhost_55430"
-		Release.AspNetCompiler.PhysicalPath = "TamperMonkey\"
-		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_55430\"
-		Release.AspNetCompiler.Updateable = "true"
-		Release.AspNetCompiler.ForceOverwrite = "true"
-		Release.AspNetCompiler.FixedNames = "false"
-		Release.AspNetCompiler.Debug = "False"
-		SlnRelativePath = "TamperMonkey\"
-		DefaultWebSiteLanguage = "Visual Basic"
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TamperMonkey", "TamperMonkey\TamperMonkey.csproj", "{2D63AEDB-7837-42E6-AA38-56C76710A3D7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{832C5031-EB9F-4D6F-BE95-2A5893B04D81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{832C5031-EB9F-4D6F-BE95-2A5893B04D81}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D63AEDB-7837-42E6-AA38-56C76710A3D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D63AEDB-7837-42E6-AA38-56C76710A3D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D63AEDB-7837-42E6-AA38-56C76710A3D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D63AEDB-7837-42E6-AA38-56C76710A3D7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
