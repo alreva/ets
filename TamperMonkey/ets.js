@@ -39,18 +39,16 @@ $(function () {
     ];
     */
 
-    var $tableRowAddNew = $('.TableRowAddNew');
-
     var $desc = $('[name="effortRecordDescription"]');
 
-    var $descTD = $desc.closest('TD');
+    var $descTd = $desc.closest('TD');
 
     var buildShortcutHtml = function (s) {
         return '<div><a class="ets-shortcut" data-p="' + s.p + '" data-t="' + s.t + '" data-h="' + s.h + '" data-o="' + s.o + '" data-d="' + escape(s.d) + '" data-c="' + s.c + '">' + s.s + '</a></div>';
     };
 
     $.each(shortcuts, function () {
-        $descTD.append(buildShortcutHtml(this));
+        $descTd.append(buildShortcutHtml(this));
     });
 
     $('.ets-shortcut').etsShortcut();
@@ -66,9 +64,11 @@ $(function () {
 
     $('[name="effortRecordStarted"]').change(function () {
         $('[name="effortRecordFinished"]').val($(this).val());
-    })
+    });
 
     $('.calendar_icon').closest('TD').css('vertical-align', 'top');
+
+    $('#acceptFormTable').etsTotals();
 });
 
 (function () {
@@ -79,8 +79,6 @@ $(function () {
     var $ot = $('[name="effortRecordEffortOvertime"]');
     var $desc = $('[name="effortRecordDescription"]');
     var $costC = $('#costCenterAccount');
-
-    var $taskTD = $task.closest('TD');
 
     $.fn.etsShortcut = function () {
 
@@ -96,7 +94,7 @@ $(function () {
                 c: $shortcut.data('c'),
                 t: $shortcut.data('t')
             });
-        })
+        });
 
     };
 
@@ -141,13 +139,11 @@ $(function () {
 
     $.fn.etsTimeButtons = function () {
 
-        var date =
-
         $(this).each(function () {
             var $btn = $(this);
             var $parent = $btn.parent();
 
-            $parent.append($('<br />'))
+            $parent.append($('<br />'));
 
             $('<button style="width:18px;">+</button>')
             .click(function () {
@@ -176,6 +172,49 @@ $(function () {
         });
     };
 
+    $.fn.etsTotals = function () {
+
+        var $etsLines = $(this).find('tr')
+            .filter(function () {
+                return !$(this).hasClass('TableRowHeader')
+                && !$(this).hasClass('TableRowAddNew')
+                && !$(this).hasClass('TableRowTotal');
+            });
+
+        var allDates = [];
+        var totals = {};
+
+        $etsLines.each(function () {
+            var $row = $(this);
+
+            var dateVal = $row.find('td:nth-child(12)').text().trim();
+            allDates.push(dateVal);
+
+            var hoursVal = parseFloat($row.find('td:nth-child(8)').text().trim());
+
+            $row
+                .attr('data-date', dateVal)
+                .attr('data-hours', hoursVal);
+
+            totals[dateVal] = {
+                date: dateVal,
+                total: (totals[dateVal] ? totals[dateVal].total : 0) + (hoursVal || 0)
+            };
+        });
+
+        $.each(totals, function () {
+            if (this.total >= 8.0) {
+                $etsLines.filter('[data-date="' + this.date + '"]').addClass('ets-day-filled');
+            }
+        });
+
+        var customStyle =
+            ".ets-day-filled {background-color:#dff0d8}"
+        ;
+
+        addGlobalStyle(customStyle);
+    }
+
     var pasteRecord = function (r) {
 
         $proj.val(r.p);
@@ -188,6 +227,10 @@ $(function () {
         }
 
         $proj.change();
+
+        /*        $.get("http://timeserver/ajax/issuedropdawn.ets?effortRecordProjectCode=" + r.p + "&_=", function(data) {
+                    debugger;
+                });*/
 
         setTimeout(function () {
             var $selectedOption = $('option:contains("' + r.t + '")');
@@ -205,9 +248,17 @@ $(function () {
         return $row.find('td.TableCellContent.whsp_normal div').text().trim();
     }
 
+    var addGlobalStyle = function (css) {
+        var head, style;
+        head = document.getElementsByTagName('head')[0];
+        if (!head) { return; }
+        style = document.createElement('style');
+        style.type = 'text/css';
+        style.innerHTML = css;
+        head.appendChild(style);
+    }
+
 })(this);
-
-
 
 
 
