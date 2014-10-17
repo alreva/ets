@@ -205,11 +205,19 @@ $(function () {
         $.each(totals, function () {
             if (this.total >= 8.0) {
                 $etsLines.filter('[data-date="' + this.date + '"]').addClass('ets-day-filled');
+            } else {
+                var $headTd = $etsLines.filter('[data-date="' + this.date + '"]').first()
+                    .addClass('ets-day-not-filled-top')
+                    .find('TD').eq(1);
+                $headTd.html($headTd.html() + ' ' + this.total + " / 8")
+                $etsLines.filter('[data-date="' + this.date + '"]').last().addClass('ets-day-not-filled-bottom');
             }
         });
 
         var customStyle =
-            ".ets-day-filled {background-color:#dff0d8}"
+            ".ets-day-filled {background-color:#dff0d8} " +
+            ".ets-day-not-filled-top TD {border-top: 2px dotted #999} " +
+            ".ets-day-not-filled-top TD:nth-child(2) {text-align: right; font-weight:bold; color:#eea236} "
         ;
 
         addGlobalStyle(customStyle);
@@ -259,7 +267,6 @@ $(function () {
     }
 
 })(this);
-
 
 
 
