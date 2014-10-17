@@ -216,7 +216,8 @@ $(function () {
 
         var customStyle =
             ".ets-day-filled {background-color:#dff0d8} " +
-            ".ets-day-not-filled-top TD {border-top: 2px dotted #999} " +
+            ".ets-day-not-filled-top TD {border-top: 1px dotted #999;} " +
+            ".ets-day-not-filled-bottom TD {border-bottom: 1px dotted #999} " +
             ".ets-day-not-filled-top TD:nth-child(2) {text-align: right; font-weight:bold; color:#eea236} "
         ;
 
