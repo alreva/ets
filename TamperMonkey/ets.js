@@ -174,7 +174,7 @@ $(function () {
 
     $.fn.etsTotals = function () {
 
-        var $etsLines = $(this).find('tr')
+        var $etsLines = $(this).find('> tbody > tr')
             .filter(function () {
                 return !$(this).hasClass('TableRowHeader')
                 && !$(this).hasClass('TableRowAddNew')
@@ -187,7 +187,7 @@ $(function () {
         $etsLines.each(function () {
             var $row = $(this);
 
-            var dateVal = $row.find('td:nth-child(12)').text().trim();
+            var dateVal = $row.find('> td:nth-child(12)').text().trim();
             allDates.push(dateVal);
 
             var hoursVal = parseFloat($row.find('td:nth-child(8)').text().trim());
@@ -206,9 +206,9 @@ $(function () {
             if (this.total >= 8.0) {
                 $etsLines.filter('[data-date="' + this.date + '"]').addClass('ets-day-filled');
             } else {
-                var $headTd = $etsLines.filter('[data-date="' + this.date + '"]').first()
-                    .addClass('ets-day-not-filled-top')
-                    .find('TD').eq(1);
+                $etsLines.filter('[data-date="' + this.date + '"]').first()
+                    .addClass('ets-day-not-filled-top');
+                var $headTd = $('[data-date="' + this.date + '"] > TD').eq(1);
                 $headTd.html($headTd.html() + ' ' + this.total + " / 8")
                 $etsLines.filter('[data-date="' + this.date + '"]').last().addClass('ets-day-not-filled-bottom');
             }
