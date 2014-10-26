@@ -17,7 +17,30 @@
 
 $(function () {
 
-    var requestValidationTokenUri = 'http://tfs2010.it.volvo.net:8080/tfs/Global/SEGOT-eCom-VolvoPentaShop/EPC%202%20Project%20Board/_workitems';
+    /*
+    none
+    DEV - Analysis
+    DEV - Coding
+    DEV - Communication and management
+    DEV - Demo
+    DEV - Deployment
+    DEV - Design
+    DEV - Documentation
+    DEV - Documents study
+    DEV - Issues Fixing
+    DEV - Test document creation
+    DEV - Testing
+    */
+
+    var tfsActionMappings = {
+        'Deployment': 'DEV - Deployment',
+        'Design': 'DEV - Design',
+        'Development': 'DEV - Coding',
+        'Documentation': 'DEV - Documentation',
+        'Requirements': 'DEV - Communication and management',
+        'Testing': 'DEV - Testing',
+        '': 'DEV - Coding'
+    }
 
     GM_xmlhttpRequest({
         method: "GET",
@@ -34,7 +57,7 @@ $(function () {
             GM_xmlhttpRequest({
                 method: "POST",
                 url: "http://tfs2010.it.volvo.net:8080/tfs/Global/SEGOT-eCom-VolvoPentaShop/_api/_wit/query?__v=3",
-                data: "wiql=select [System.Id], [System.WorkItemType], [System.Title], [Microsoft.VSTS.Scheduling.RemainingWork], [System.AssignedTo], [System.State], [System.Tags], [Microsoft.VSTS.Common.BacklogPriority] from WorkItemLinks where (Source.[System.TeamProject] = @project and Source.[System.AssignedTo] = @me and Source.[System.WorkItemType] <> '' and Source.[System.State] <> '' and Source.[System.IterationPath] under 'SEGOT-eCom-VolvoPentaShop\\2014 - EPC 2\\EPC - Iteration 1 (W44 - W46)') and ([System.Links.LinkType] = 'System.LinkTypes.Hierarchy-Forward') and (Target.[System.WorkItemType] <> '') order by [Microsoft.VSTS.Common.BacklogPriority], [System.Title] mode (Recursive)"
+                data: "wiql=select [System.Id], [System.Title], [Microsoft.VSTS.Common.Activity] from WorkItemLinks where (Source.[System.TeamProject] = @project and Source.[System.AssignedTo] = @me and Source.[System.WorkItemType] <> '' and Source.[System.State] <> '' and Source.[System.IterationPath] under 'SEGOT-eCom-VolvoPentaShop\\2014 - EPC 2\\EPC - Iteration 1 (W44 - W46)') and ([System.Links.LinkType] = 'System.LinkTypes.Hierarchy-Forward') and (Target.[System.WorkItemType] <> '') order by [Microsoft.VSTS.Common.BacklogPriority], [System.Title] mode (Recursive)"
                 + "&runQuery=true"
                 + "&persistenceId=8da6aa2f-bcba-461e-9535-1e1469958c5a"
                 + "&__RequestVerificationToken=" + verificationToken,
@@ -47,14 +70,27 @@ $(function () {
                     var shortcuts = [];
 
                     $.each(rows, function (i, row) {
-                        var title = 'TFS ' + row[0] + ' - ' + row[2];
+
+                        var itemTitle = row[1];
+                        if (itemTitle.indexOf('EPC > ') == 0) {
+                            itemTitle = itemTitle.substr('EPC > '.length);
+                        }
+
+                        var title = 'TFS #' + row[0] + ' - ' + itemTitle;
+
+                        if (title.indexOf('EPC > ') == 0) {
+                            title = title.substr('EPC > '.length);
+                        }
+
+                        var task = tfsActionMappings[row[2] || ''];
+
                         shortcuts.push({
                             s: title,
-                            p: 'VECOMMA',
-                            t: 'MA - Enhancements (WBS is mandatory)',
-                            h: 1,
+                            p: 'VEPC2',
+                            t: task,
+                            h: 8,
                             o: 0,
-                            d: 'WBS <C-18500-01-01-10> ' + title
+                            d: title
                         });
                     });
 
