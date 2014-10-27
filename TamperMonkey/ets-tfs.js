@@ -17,20 +17,8 @@
 
 $(function () {
 
-    /*
-    none
-    DEV - Analysis
-    DEV - Coding
-    DEV - Communication and management
-    DEV - Demo
-    DEV - Deployment
-    DEV - Design
-    DEV - Documentation
-    DEV - Documents study
-    DEV - Issues Fixing
-    DEV - Test document creation
-    DEV - Testing
-    */
+    var $desc = $('[name="effortRecordDescription"]');
+    var $descTd = $desc.closest('TD');
 
     var tfsActionMappings = {
         'Deployment': 'DEV - Deployment',
@@ -65,6 +53,11 @@ $(function () {
                     "Content-Type": "application/x-www-form-urlencoded"
                 },
                 onload: function (xhr) {
+                    if (xhr.status == 404 || xhr.status == 401 || xhr.status == 302) {
+                        $descTd.tfsAuthLink();
+                        return;
+                    }
+
                     var rows = $.parseJSON(xhr.response).payload.rows;
 
                     var shortcuts = [];
@@ -94,10 +87,6 @@ $(function () {
                         });
                     });
 
-                    var $desc = $('[name="effortRecordDescription"]');
-
-                    var $descTd = $desc.closest('TD');
-
                     var buildShortcutHtml = function (s) {
                         return '<div><a class="ets-shortcut" data-p="' + s.p + '" data-t="' + s.t + '" data-h="' + s.h + '" data-o="' + s.o + '" data-d="' + escape(s.d) + '" data-c="' + s.c + '">' + s.s + '</a></div>';
                     };
@@ -109,6 +98,11 @@ $(function () {
                     $('.ets-shortcut').etsShortcut();
                 }
             });
+        },
+        onerror: function (xhr) {
+            if (xhr.status == 404 || xhr.status == 401 || xhr.status == 302) {
+                $descTd.tfsAuthLink();
+            }
         }
     });
 });
@@ -157,6 +151,10 @@ $(function () {
                 t: $shortcut.data('t')
             });
         });
-
     };
+
+    $.fn.tfsAuthLink = function()
+    {
+        $(this).append('Authenticate by following <a href="http://tfs2010.it.volvo.net:8080/tfs/Global/SEGOT-eCom-VolvoPentaShop/EPC%202%20Project%20Board/_backlogs">this link</a> to be able to copy-paste from TFS');
+    }
 })(this);
