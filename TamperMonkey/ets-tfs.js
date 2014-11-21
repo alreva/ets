@@ -19,16 +19,29 @@ $(function () {
 
     var $desc = $('[name="effortRecordDescription"]');
     var $descTd = $desc.closest('TD');
+    /*
+Print cart
+US Checkout
+Calculate price based on POC data
+User recognition
+Enviroment setup
+Home page - Make Models list to be always up-to-date
+Browsers
+Home page - Provide a link from ROW catalog to selection or home page
+Catalog - Hide inventory
+Cart - Allow adding parts without prices into the cart
+Catalog - Select parts from images
+Catalog - Display Kits on product details
+Export cart
+Cart - Integrate POC-based price load into the Cart pages
+Home page - Set Model / Serial Number filters in URL
+Catalog - Update existing Prepared Search
+Catalog - Calculate price based on price calculation strategy
+Catalog - Accept links with filters from VPPN
+Bulletins
+Prerequisites
 
-    var tfsActionMappings = {
-        'Deployment': 'DEV - Deployment',
-        'Design': 'DEV - Design',
-        'Development': 'DEV - Coding',
-        'Documentation': 'DEV - Documentation',
-        'Requirements': 'DEV - Communication and management',
-        'Testing': 'DEV - Testing',
-        '': 'DEV - Coding'
-    }
+    */
 
     GM_xmlhttpRequest({
         method: "GET",
@@ -75,7 +88,8 @@ $(function () {
 
                         var title = 'TFS #' + row[0] + ' - ' + itemTitle;
 
-                        var task = tfsActionMappings[row[2] || ''];
+                        // TODO row[2] is not used. Remove it.
+                        var task = $.findTask(itemTitle);
 
                         shortcuts.push({
                             s: title,
@@ -156,4 +170,36 @@ $(function () {
     $.fn.tfsAuthLink = function () {
         $(this).append('Authenticate by following <a href="http://tfs2010.it.volvo.net:8080/tfs/Global/SEGOT-eCom-VolvoPentaShop/EPC%202%20Project%20Board/_backlogs">this link</a> to be able to copy-paste from TFS');
     }
-})(this);
+
+    var tfsActionMappings = [
+          { pattern: 'Architecture artifacts', task: 'DEV - Architecture Artifacts' }
+        , { pattern: 'Home page - Provide a link from ROW catalog to selection or home page', task: 'DEV - Home: Link ROW' }
+        , { pattern: 'Home page - Set Model / Serial Number filters in URL', task: 'DEV - Home: Set Model' }
+        , { pattern: 'Calculate price based on POC data', task: 'DEV - Ctlg: Price POC' }
+        , { pattern: 'Catalog - Calculate price based on price calculation strategy', task: 'DEV - Ctlg: Price Calc Strategy' }
+        , { pattern: 'Catalog - Update existing Prepared Search', task: 'DEV - Ctlg: Search' }
+        , { pattern: 'Cart - Integrate POC-based price load into the Cart pages', task: 'DEV - Cart: POC Price' }
+        , { pattern: 'Print cart', task: 'DEV - Cart: Print' }
+        , { pattern: 'Export cart', task: 'DEV - Cart: Export' }
+        , { pattern: 'US Checkout', task: 'DEV - Checkout' }
+        , { pattern: 'Bulletins', task: 'DEV - Bulletins' }
+        , { pattern: 'Browsers', task: 'DEV - Browsers' }
+        , { pattern: 'Catalog - Accept links with filters from VPPN', task: 'DEV - Ctlg: Filters' }
+        , { pattern: 'Cart - Allow adding parts without prices into the cart', task: 'DEV - Cart: No Prices' }
+        , { pattern: 'Catalog - Hide inventory', task: 'DEV - Ctlg: Hide Inventory' }
+        , { pattern: 'Catalog - Display Kits on product details', task: 'DEV - Ctlg: Product Details Kits' }
+        , { pattern: 'User recognition', task: 'DEV - User Recognition' }
+    ];
+
+    $.findTask = function (itemTitle) {
+        var taskCandidates = tfsActionMappings.filter(function (elm) {
+            return itemTitle.indexOf(elm.pattern) >= 0;
+        });
+
+        return taskCandidates.length > 0
+            ? taskCandidates[0].task
+            : '';
+    }
+
+
+})(jQuery);
