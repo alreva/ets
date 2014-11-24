@@ -58,7 +58,7 @@ Prerequisites
             GM_xmlhttpRequest({
                 method: "POST",
                 url: "http://tfs2010.it.volvo.net:8080/tfs/Global/SEGOT-eCom-VolvoPentaShop/_api/_wit/query?__v=3",
-                data: "wiql=select [System.Id], [System.Title], [Microsoft.VSTS.Common.Activity] from WorkItemLinks where (Source.[System.TeamProject] = @project and Source.[System.AssignedTo] = @me and Source.[System.WorkItemType] <> '' and Source.[System.State] <> '' and Source.[System.IterationPath] under 'SEGOT-eCom-VolvoPentaShop\\2014 - EPC 2\\EPC - Iteration 2 (W47- W49)') and ([System.Links.LinkType] = 'System.LinkTypes.Hierarchy-Forward') and (Target.[System.WorkItemType] <> '') order by [Microsoft.VSTS.Common.BacklogPriority], [System.Title] mode (Recursive)"
+                data: "wiql=SELECT [System.Id], [System.Title], [Microsoft.VSTS.Common.Activity] FROM WorkItems WHERE [System.TeamProject] = @project AND [System.WorkItemType] = 'Task' AND [System.State] <> 'Deleted' AND [System.IterationPath] UNDER 'SEGOT-eCom-VolvoPentaShop\\2014 - EPC 2\\EPC - Iteration 2 (W47- W49)' AND [System.AssignedTo] = @me"
                 + "&runQuery=true"
                 + "&persistenceId=8da6aa2f-bcba-461e-9535-1e1469958c5a"
                 + "&__RequestVerificationToken=" + verificationToken,
@@ -117,6 +117,10 @@ Prerequisites
             if (xhr.status == 404 || xhr.status == 401 || xhr.status == 302) {
                 $descTd.tfsAuthLink();
             }
+        },
+        timeout: 5000,
+        ontimeout: function () {
+            $descTd.connectionFailedMessage();
         }
     });
 });
@@ -169,7 +173,11 @@ Prerequisites
 
     $.fn.tfsAuthLink = function () {
         $(this).append('Authenticate by following <a href="http://tfs2010.it.volvo.net:8080/tfs/Global/SEGOT-eCom-VolvoPentaShop/EPC%202%20Project%20Board/_backlogs">this link</a> to be able to copy-paste from TFS');
-    }
+    };
+
+    $.fn.connectionFailedMessage = function () {
+        $(this).append('Failed to connect to TFS. Please check if you have VPN connection enabled and the  (<a href="http://tfs2010.it.volvo.net:8080/tfs/Global/SEGOT-eCom-VolvoPentaShop">TFS Web</a>) is accessible.');
+    };
 
     var tfsActionMappings = [
           { pattern: 'Architecture artifacts', task: 'DEV - Architecture Artifacts' }

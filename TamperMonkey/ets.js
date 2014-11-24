@@ -145,18 +145,18 @@ $(function () {
 
             $parent.append($('<br />'));
 
-            $('<button style="width:18px;">+</button>')
-            .click(function () {
-                var v = parseFloat($btn.val()) + 0.5;
-                $btn.val(v > 0 ? v : 0.5);
-                return false;
-            })
-          	.appendTo($parent);
-
             $('<button style="width:18px;">-</button>')
             .click(function () {
                 var v = parseFloat($btn.val()) - 0.5;
                 $btn.val(v > 0 ? v : 0);
+                return false;
+            })
+          	.appendTo($parent);
+
+            $('<button style="width:18px;">+</button>')
+            .click(function () {
+                var v = parseFloat($btn.val()) + 0.5;
+                $btn.val(v > 0 ? v : 0.5);
                 return false;
             })
           	.appendTo($parent);
@@ -267,7 +267,7 @@ $(function () {
         head.appendChild(style);
     }
 
-})(this);
+})(jQuery);
 
 
 
