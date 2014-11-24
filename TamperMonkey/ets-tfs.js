@@ -58,7 +58,7 @@ Prerequisites
             GM_xmlhttpRequest({
                 method: "POST",
                 url: "http://tfs2010.it.volvo.net:8080/tfs/Global/SEGOT-eCom-VolvoPentaShop/_api/_wit/query?__v=3",
-                data: "wiql=SELECT [System.Id], [System.Title], [Microsoft.VSTS.Common.Activity] FROM WorkItems WHERE [System.TeamProject] = @project AND [System.WorkItemType] = 'Task' AND [System.State] <> 'Deleted' AND [System.IterationPath] UNDER 'SEGOT-eCom-VolvoPentaShop\\2014 - EPC 2\\EPC - Iteration 2 (W47- W49)' AND [System.AssignedTo] = @me"
+                data: "wiql=SELECT [System.Id], [System.Title], [Microsoft.VSTS.Scheduling.RemainingWork] FROM WorkItems WHERE [System.TeamProject] = @project AND [System.WorkItemType] = 'Task' AND [System.State] <> 'Deleted' AND [System.IterationPath] UNDER 'SEGOT-eCom-VolvoPentaShop\\2014 - EPC 2\\EPC - Iteration 2 (W47- W49)' AND [System.AssignedTo] = @me ORDER BY [System.Title]"
                 + "&runQuery=true"
                 + "&persistenceId=8da6aa2f-bcba-461e-9535-1e1469958c5a"
                 + "&__RequestVerificationToken=" + verificationToken,
@@ -88,14 +88,18 @@ Prerequisites
 
                         var title = 'TFS #' + row[0] + ' - ' + itemTitle;
 
-                        // TODO row[2] is not used. Remove it.
                         var task = $.findTask(itemTitle);
+
+                        var hours = row[2] || 0;
+                        if (hours > 8) {
+                            hours = 8;
+                        }
 
                         shortcuts.push({
                             s: title,
                             p: 'VEPC2',
                             t: task,
-                            h: 8,
+                            h: hours,
                             o: 0,
                             d: title
                         });
