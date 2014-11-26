@@ -199,7 +199,7 @@ Prerequisites
         , { pattern: 'Catalog - Accept links with filters from VPPN', task: 'DEV - Ctlg: Filters' }
         , { pattern: 'Cart - Allow adding parts without prices into the cart', task: 'DEV - Cart: No Prices' }
         , { pattern: 'Catalog - Hide inventory', task: 'DEV - Ctlg: Hide Inventory' }
-        , { pattern: 'Catalog - Display Kits on product details', task: 'DEV - Ctlg: Product Details Kits' }
+        , { pattern: 'Kits', task: 'DEV - Ctlg: Product Details Kits' }
         , { pattern: 'User recognition', task: 'DEV - User Recognition' }
     ];
 
