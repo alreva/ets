@@ -186,21 +186,22 @@ Prerequisites
     var tfsActionMappings = [
           { pattern: 'Architecture artifacts', task: 'DEV - Architecture Artifacts' }
         , { pattern: 'Home page - Provide a link from ROW catalog to selection or home page', task: 'DEV - Home: Link ROW' }
-        , { pattern: 'Home page - Set Model / Serial Number filters in URL', task: 'DEV - Home: Set Model' }
-        , { pattern: 'Calculate price based on POC data', task: 'DEV - Ctlg: Price POC' }
+        , { pattern: 'Set Model / Serial Number filters in URL', task: 'DEV - Home: Set Model' }
+        , { pattern: 'Catalog POC Prices', task: 'DEV - Ctlg: Price POC' }
         , { pattern: 'Catalog - Calculate price based on price calculation strategy', task: 'DEV - Ctlg: Price Calc Strategy' }
-        , { pattern: 'Catalog - Update existing Prepared Search', task: 'DEV - Ctlg: Search' }
-        , { pattern: 'Cart - Integrate POC-based price load into the Cart pages', task: 'DEV - Cart: POC Price' }
+        , { pattern: 'Prepared Search', task: 'DEV - Ctlg: Search' }
+        , { pattern: 'Cart - POC Prices', task: 'DEV - Cart: POC Price' }
         , { pattern: 'Print cart', task: 'DEV - Cart: Print' }
         , { pattern: 'Export cart', task: 'DEV - Cart: Export' }
         , { pattern: 'US Checkout', task: 'DEV - Checkout' }
         , { pattern: 'Bulletins', task: 'DEV - Bulletins' }
         , { pattern: 'Browsers', task: 'DEV - Browsers' }
         , { pattern: 'Catalog - Accept links with filters from VPPN', task: 'DEV - Ctlg: Filters' }
-        , { pattern: 'Cart - Allow adding parts without prices into the cart', task: 'DEV - Cart: No Prices' }
+        , { pattern: 'Add parts w/o prices', task: 'DEV - Cart: No Prices' }
         , { pattern: 'Catalog - Hide inventory', task: 'DEV - Ctlg: Hide Inventory' }
         , { pattern: 'Kits', task: 'DEV - Ctlg: Product Details Kits' }
         , { pattern: 'User recognition', task: 'DEV - User Recognition' }
+        , { pattern: 'Select parts from images', task: 'Dev - Ctlg: Select Parts From Images' }
     ];
 
     $.findTask = function (itemTitle) {
