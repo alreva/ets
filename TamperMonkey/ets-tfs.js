@@ -202,6 +202,7 @@ Prerequisites
         , { pattern: 'Kits', task: 'DEV - Ctlg: Product Details Kits' }
         , { pattern: 'User recognition', task: 'DEV - User Recognition' }
         , { pattern: 'Select parts from images', task: 'Dev - Ctlg: Select Parts From Images' }
+        , { pattern: 'Unplanned changes', task: 'Unplanned Changes - Nov 2014' }
     ];
 
     $.findTask = function (itemTitle) {
