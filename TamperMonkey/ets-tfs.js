@@ -15,6 +15,8 @@
 
 // ==/UserScript==
 
+// adasd;ajslkdjl
+
 $(function () {
 
     var $desc = $('[name="effortRecordDescription"]');
