@@ -176,7 +176,7 @@ Prerequisites
     };
 
     $.fn.tfsAuthLink = function () {
-        $(this).append('!!!Authenticate by following <a href="http://tfs2010.it.volvo.net:8080/tfs/Global/SEGOT-eCom-VolvoPentaShop/EPC%202%20Project%20Board/_backlogs">this link</a> to be able to copy-paste from TFS');
+        $(this).append('Authenticate by following <a href="http://tfs2010.it.volvo.net:8080/tfs/Global/SEGOT-eCom-VolvoPentaShop/EPC%202%20Project%20Board/_backlogs">this link</a> to be able to copy-paste from TFS');
     };
 
     $.fn.connectionFailedMessage = function () {
