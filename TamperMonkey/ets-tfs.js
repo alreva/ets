@@ -180,7 +180,7 @@ Prerequisites
     };
 
     $.fn.connectionFailedMessage = function () {
-        $(this).append('Failed to connect to TFS. Please check if you have VPN connection enabled and the  (<a href="http://tfs2010.it.volvo.net:8080/tfs/Global/SEGOT-eCom-VolvoPentaShop">TFS Web</a>) is accessible.');
+        $(this).append('!Failed to connect to TFS. Please check if you have VPN connection enabled and the  (<a href="http://tfs2010.it.volvo.net:8080/tfs/Global/SEGOT-eCom-VolvoPentaShop">TFS Web</a>) is accessible.');
     };
 
     var tfsActionMappings = [
