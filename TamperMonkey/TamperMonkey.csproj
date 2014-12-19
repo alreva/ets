@@ -60,6 +60,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="ets-autoupdate.js" />
     <Content Include="ets-tfs.js" />
     <Content Include="ets.js" />
   </ItemGroup>
