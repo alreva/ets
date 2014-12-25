@@ -16,8 +16,8 @@
 
 $(function () {
     $.each([
-        { s: "http://www.volvopentashop.com/Content/ets.js", c: (function () { etsX($); }) },
-        { s: "http://www.volvopentashop.com/Content/ets-tfs.js", c: (function () { etsTfsX($, GM_xmlhttpRequest); }) }],
+        { s: "https://rawgit.com/alreva/ets/master/TamperMonkey/ets.js", c: (function () { etsX($); }) },
+        { s: "https://rawgit.com/alreva/ets/master/TamperMonkey/ets-tfs.js", c: (function () { etsTfsX($, GM_xmlhttpRequest); }) }],
         function (_, v) {
             console.log("Loaging: '" + v.s + "'...");
             $.getScript(v.s, function (data, textStatus, jqxhr) {
