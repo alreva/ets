@@ -54,7 +54,9 @@
         };
 
         var tfsActionMappings = [
-              { pattern: 'Architecture artifacts', task: 'DEV - Architecture Artifacts' }
+              { pattern: 'User Recognition over VPPN', task: 'DEV - User Recognition via VPPN (unplanned)' }
+            , { pattern: 'Catalog - POC Stock Status', task: 'DEV - Ctlg: POC Stock Status (unplanned)' }
+            , { pattern: 'Architecture artifacts', task: 'DEV - Architecture Artifacts' }
             , { pattern: 'Home page - Provide a link from ROW catalog to selection or home page', task: 'DEV - Home: Link ROW' }
             , { pattern: 'Set Model / Serial Number filters in URL', task: 'DEV - Home: Set Model' }
             , { pattern: 'Catalog POC Prices', task: 'DEV - Ctlg: Price POC' }
@@ -71,7 +73,7 @@
             , { pattern: 'Catalog - Hide inventory', task: 'DEV - Ctlg: Hide Inventory' }
             , { pattern: 'Kits', task: 'DEV - Ctlg: Product Details Kits' }
             , { pattern: 'User recognition', task: 'DEV - User Recognition' }
-            , { pattern: 'Select parts from images', task: 'Dev - Ctlg: Select Parts From Images' }
+            , { pattern: 'Select parts from images', task: 'DEV - Ctlg: Select Parts From Images' }
             , { pattern: 'Unplanned changes', task: 'Unplanned Changes - Nov 2014' }
         ];
 
