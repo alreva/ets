@@ -17,6 +17,8 @@
 
 $(function () {
 
+    console.log("Running jQuery onload...");
+
     var $desc = $('[name="effortRecordDescription"]');
     var $descTd = $desc.closest('TD');
     /*

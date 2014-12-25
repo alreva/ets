@@ -14,6 +14,8 @@
 
 $(function () {
 
+    console.log("Running jQuery onload...");
+
     var shortcuts = [];
 
     var $desc = $('[name="effortRecordDescription"]');
