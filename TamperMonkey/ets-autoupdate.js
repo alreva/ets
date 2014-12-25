@@ -12,7 +12,23 @@
 
 // @require		https://code.jquery.com/jquery-2.1.1.min.js
 // @require		http://courses.ischool.berkeley.edu/i290-4/f09/resources/gm_jq_xhr.js
-// @require		https://raw.githubusercontent.com/alreva/ets/master/TamperMonkey/ets.js
-// @require		https://raw.githubusercontent.com/alreva/ets/master/TamperMonkey/ets-tfs.js
-
 // ==/UserScript==
+
+$(function () {
+
+    var dt = new Date();
+
+    var uuid = "uuid:" + dt.getFullYear() + dt.getMonth() + dt.getDate() + dt.getHours();
+
+    $.each([
+        "https://rawgit.com/alreva/ets/master/TamperMonkey/ets.js?" + uuid,
+        "https://rawgit.com/alreva/ets/master/TamperMonkey/ets-tfs.js?" + uuid],
+        function (_, v) {
+            $.getScript(v, function (data, textStatus, jqxhr) {
+                console.log(data); // Data returned
+                console.log(textStatus); // Success
+                console.log(jqxhr.status); // 200
+                console.log("Load complete.");
+            });
+        });
+});
