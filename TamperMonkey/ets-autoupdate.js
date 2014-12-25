@@ -16,14 +16,15 @@
 
 $(function () {
     $.each([
-        "https://rawgit.com/alreva/ets/master/TamperMonkey/ets.js",
-        "https://rawgit.com/alreva/ets/master/TamperMonkey/ets-tfs.js"],
+        { s: "http://www.volvopentashop.com/Content/ets.js", c: (function () { etsX($); }) },
+        { s: "http://www.volvopentashop.com/Content/ets-tfs.js", c: (function () { etsTfsX($, GM_xmlhttpRequest); }) }],
         function (_, v) {
-            $.getScript(v, function (data, textStatus, jqxhr) {
-                console.log(data); // Data returned
-                console.log(textStatus); // Success
-                console.log(jqxhr.status); // 200
-                console.log("Load complete.");
+            console.log("Loaging: '" + v.s + "'...");
+            $.getScript(v.s, function (data, textStatus, jqxhr) {
+                console.log("Loaded:  '" + v.s + "'");
+                console.log("Running: '" + v.s + "'...");
+                v.c();
+                console.log("Run OK:  '" + v.s + "'");
             });
         });
 });
