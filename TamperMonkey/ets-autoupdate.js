@@ -15,14 +15,9 @@
 // ==/UserScript==
 
 $(function () {
-
-    var dt = new Date();
-
-    var uuid = "uuid:" + dt.getFullYear() + dt.getMonth() + dt.getDate() + dt.getHours();
-
     $.each([
-        "https://rawgit.com/alreva/ets/master/TamperMonkey/ets.js?" + uuid,
-        "https://rawgit.com/alreva/ets/master/TamperMonkey/ets-tfs.js?" + uuid],
+        "https://rawgit.com/alreva/ets/master/TamperMonkey/ets.js",
+        "https://rawgit.com/alreva/ets/master/TamperMonkey/ets-tfs.js"],
         function (_, v) {
             $.getScript(v, function (data, textStatus, jqxhr) {
                 console.log(data); // Data returned
