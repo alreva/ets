@@ -56,7 +56,11 @@
                 $.each([['Mon', 1], ['Tue', 2], ['Wed', 3], ['Thu', 4], ['Fri', 5]], function (i, v) {
                     $('<button style="width:71px;display:block;">' + v[0] + '</button>')
                         .click(function () {
-                            $datePicker.val('' + (d.getDate() - d.getDay() + v[1]) + '.' + (d.getMonth() + 1) + '.' + d.getFullYear());
+
+                            var updatedDate = new Date(d.getFullYear(), d.getMonth());
+                            updatedDate.setDate(d.getDate() - d.getDay() + v[1]);
+
+                            $datePicker.val('' + updatedDate.getDate() + '.' + (updatedDate.getMonth() + 1) + '.' + updatedDate.getFullYear());
                             $datePicker.change();
                             return false;
                         })
