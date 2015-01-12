@@ -58,6 +58,7 @@
             , { pattern: 'Catalog - POC Stock Status', task: 'DEV - Ctlg: POC Stock Status (unplanned)' }
             , { pattern: 'Architecture artifacts', task: 'DEV - Architecture Artifacts' }
             , { pattern: 'Home page - Provide a link from ROW catalog to selection or home page', task: 'DEV - Home: Link ROW' }
+            , { pattern: 'Dealer locator', task: 'DEV - Home: Link ROW' }
             , { pattern: 'Set Model / Serial Number filters in URL', task: 'DEV - Home: Set Model' }
             , { pattern: 'Catalog POC Prices', task: 'DEV - Ctlg: Price POC' }
             , { pattern: 'Catalog - Calculate price based on price calculation strategy', task: 'DEV - Ctlg: Price Calc Strategy' }
