@@ -78,6 +78,7 @@
             , { pattern: 'Unplanned changes', task: 'Unplanned Changes - Nov 2014' }
             , { pattern: 'Demo Jan 8', task: 'Demo Changes - Jan 8' }
             , { pattern: 'Demo Jan 14', task: 'Demo Changes - Jan 8' }
+            , { pattern: 'Demo Jan 27', task: 'Demo Changes - Jan 29' }
         ];
 
         $.findTask = function (itemTitle) {

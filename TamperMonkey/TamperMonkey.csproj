@@ -63,6 +63,7 @@
     <Content Include="ets-autoupdate.js" />
     <Content Include="ets-tfs.js" />
     <Content Include="ets.js" />
+    <Content Include="TFSKanbanHideCols.js" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
