@@ -46,11 +46,11 @@
         };
 
         $.fn.tfsAuthLink = function () {
-            $(this).append('Authenticate by following <a href="http://tfs2010.it.volvo.net:8080/tfs/Global/SEGOT-eCom-VolvoPentaShop/EPC%202%20Project%20Board/_backlogs">this link</a> to be able to copy-paste from TFS');
+            $(this).append('Authenticate by following <a href="http://tfs.it.volvo.net:8080/tfs/Global/SEGOT-eCom-VolvoPentaShop/EPC%202%20Project%20Board/_backlogs">this link</a> to be able to copy-paste from TFS');
         };
 
         $.fn.connectionFailedMessage = function () {
-            $(this).append('!Failed to connect to TFS. Please check if you have VPN connection enabled and the  (<a href="http://tfs2010.it.volvo.net:8080/tfs/Global/SEGOT-eCom-VolvoPentaShop">TFS Web</a>) is accessible.');
+            $(this).append('!Failed to connect to TFS. Please check if you have VPN connection enabled and the  (<a href="http://tfs.it.volvo.net:8080/tfs/Global/SEGOT-eCom-VolvoPentaShop">TFS Web</a>) is accessible.');
         };
 
         var tfsActionMappings = [
@@ -79,6 +79,7 @@
             , { pattern: 'Demo Jan 8', task: 'Demo Changes - Jan 8' }
             , { pattern: 'Demo Jan 14', task: 'Demo Changes - Jan 8' }
             , { pattern: 'Demo Jan 27', task: 'Demo Changes - Jan 29' }
+            , { pattern: 'Demo Feb 4', task: 'Demo Changes - Feb 4' }
         ];
 
         $.findTask = function (itemTitle) {
@@ -97,7 +98,7 @@
 
     GM_xmlhttpRequest({
         method: "GET",
-        url: "http://tfs2010.it.volvo.net:8080/tfs/Global/SEGOT-eCom-VolvoPentaShop/EPC%202%20Project%20Board/_workitems",
+        url: "http://tfs.it.volvo.net:8080/tfs/Global/SEGOT-eCom-VolvoPentaShop/EPC%202%20Project%20Board/_workitems",
         onload: function (xhr) {
             var verificationToken = '';
 
@@ -109,8 +110,8 @@
 
             GM_xmlhttpRequest({
                 method: "POST",
-                url: "http://tfs2010.it.volvo.net:8080/tfs/Global/SEGOT-eCom-VolvoPentaShop/_api/_wit/query?__v=3",
-                data: "wiql=SELECT [System.Id], [System.Title], [Microsoft.VSTS.Scheduling.RemainingWork] FROM WorkItems WHERE [System.TeamProject] = @project AND [System.WorkItemType] = 'Task' AND [System.State] <> 'Deleted' AND [System.State] <> 'Removed' AND ([System.IterationPath] UNDER 'SEGOT-eCom-VolvoPentaShop\\2014 - EPC 2\\EPC - Iteration 5 (W4 - W5)') AND [System.AssignedTo] = @me ORDER BY [System.Title]"
+                url: "http://tfs.it.volvo.net:8080/tfs/Global/SEGOT-eCom-VolvoPentaShop/_api/_wit/query?__v=3",
+                data: "wiql=SELECT [System.Id], [System.Title], [Microsoft.VSTS.Scheduling.RemainingWork] FROM WorkItems WHERE [System.TeamProject] = @project AND [System.WorkItemType] = 'Task' AND [System.State] <> 'Deleted' AND [System.State] <> 'Removed' AND ([System.IterationPath] UNDER 'SEGOT-eCom-VolvoPentaShop\\2014 - EPC 2\\EPC - Iteration 6 (W6 - W7)') AND [System.AssignedTo] = @me ORDER BY [System.Title]"
                 + "&runQuery=true"
                 + "&persistenceId=8da6aa2f-bcba-461e-9535-1e1469958c5a"
                 + "&__RequestVerificationToken=" + verificationToken,
