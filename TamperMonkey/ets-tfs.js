@@ -81,6 +81,8 @@
             , { pattern: 'Demo Jan 27', task: 'Demo Changes - Jan 29' }
             , { pattern: 'Demo Feb 4', task: 'Demo Changes - Feb 4' }
             , { pattern: 'Help files', task: 'DEV - Help Files' }
+            , { pattern: 'Fix > ', task: 'Issues fixing' }
+            , { pattern: 'UAT', task: 'Acceptance testing support' }
         ];
 
         $.findTask = function (itemTitle) {
