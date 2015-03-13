@@ -114,7 +114,7 @@
             GM_xmlhttpRequest({
                 method: "POST",
                 url: "http://tfs.it.volvo.net:8080/tfs/Global/SEGOT-eCom-VolvoPentaShop/_api/_wit/query?__v=3",
-                data: "wiql=SELECT [System.Id], [System.Title], [Microsoft.VSTS.Scheduling.RemainingWork] FROM WorkItems WHERE [System.TeamProject] = @project AND [System.WorkItemType] = 'Task' AND [System.State] <> 'Deleted' AND [System.State] <> 'Removed' AND ([System.IterationPath] UNDER 'SEGOT-eCom-VolvoPentaShop\\2014 - EPC 2\\EPC - Iteration 7 (W8 - W9)') AND [System.AssignedTo] = @me ORDER BY [System.Title]"
+                data: "wiql=SELECT [System.Id], [System.Title], [Microsoft.VSTS.Scheduling.RemainingWork] FROM WorkItems WHERE [System.TeamProject] = @project AND [System.WorkItemType] = 'Task' AND [System.State] <> 'Deleted' AND [System.State] <> 'Removed' AND ([System.IterationPath] UNDER 'SEGOT-eCom-VolvoPentaShop\\2014 - EPC 2\\EPC - Iteration 7 (W8 - W9)' OR [System.IterationPath] UNDER 'SEGOT-eCom-VolvoPentaShop\\2014 - EPC 2\\EPC - Iteration 8 (W10 - W11)') AND [System.AssignedTo] = @me ORDER BY [System.Title]"
                 + "&runQuery=true"
                 + "&persistenceId=8da6aa2f-bcba-461e-9535-1e1469958c5a"
                 + "&__RequestVerificationToken=" + verificationToken,
