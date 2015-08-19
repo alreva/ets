@@ -61,10 +61,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ets-dev.js" />
-    <Content Include="ets-autoupdate.js" />
-    <Content Include="vce-tfs-dev.js" />
-    <Content Include="vce-tfs-autoupdate.js" />
+    <Content Include="ServiceFiles\ets-dev.js" />
+    <Content Include="ServiceFiles\ets-autoupdate.js" />
+    <Content Include="ServiceFiles\vce-tfs-dev.js" />
+    <Content Include="ServiceFiles\vce-tfs-autoupdate.js" />
     <Content Include="vce-tfs.js" />
     <Content Include="ets-tfs.js" />
     <Content Include="ets.js" />
