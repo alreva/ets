@@ -237,12 +237,12 @@
             } else {
                 $etsLines.filter('[data-date="' + this.date + '"]').first()
                     .addClass('ets-day-not-filled-top');
-                var $headTd = $('[data-date="' + this.date + '"] > TD').eq(1);
+                var $headTd = $('[data-date="' + this.date + '"] > TD').eq(0);
 
                 if (this.totalOvr > 0) {
-                    $headTd.html($headTd.html() + ' ' + this.total + " / <font color='#CC071E'>" + this.totalOvr + "</font>");
+                    $headTd.html($headTd.html() + " <b><font color='#3c763d'>" + this.total + "</font> / <font color='#CC071E'>" + this.totalOvr + "</font></b>");
                 } else {
-                    $headTd.html($headTd.html() + ' ' + this.total);
+                    $headTd.html($headTd.html() + " <b><font color='#3c763d'>" + this.total + "</font></b>");
                 }
 
                 $etsLines.filter('[data-date="' + this.date + '"]').last().addClass('ets-day-not-filled-bottom');
