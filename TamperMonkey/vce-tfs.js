@@ -112,15 +112,13 @@
                 }
             });
 
+            var sprintSettingsItemId = 73204;
+
             GM_xmlhttpRequest({
-                method: "POST",
-                url: "http://tfs.it.volvo.net:8080/tfs/Global3/SEGOT-eCom-CORE/VCE%20Team/_api/_wit/query?__v=3",
-                data: "wiql=SELECT [System.Id], [System.WorkItemType], [Microsoft.VSTS.Common.BacklogPriority], [Microsoft.VSTS.Common.Severity], [System.Title], [System.State], [Microsoft.VSTS.Scheduling.Effort], [Microsoft.VSTS.Scheduling.RemainingWork], [Volvo.Custom.eCOMCore.FixedDate], [System.AssignedTo], [Volvo.Custom.eCOMCore.CaseOrigin], [System.AreaPath], [System.IterationPath] FROM WorkItemLinks WHERE ([Source].[System.WorkItemType] IN GROUP 'Microsoft.RequirementCategory'  AND  [Source].[System.State] IN ('New', 'Approved', 'Committed', 'Done')) And ([System.Links.LinkType] = 'System.LinkTypes.Hierarchy-Forward') And ([Target].[System.WorkItemType] IN GROUP 'Microsoft.TaskCategory'  AND  [Target].[System.IterationPath] UNDER 'SEGOT-eCom-CORE\\VCE\\VCE EMEA\\Stabilization\\Stabilization W33 - W35'  AND  [Target].[System.State] IN ('To Do', 'In Progress', 'Done')  AND  [Target].[System.AreaPath] UNDER 'SEGOT-eCom-CORE\\VCE'  AND  [Target].[System.AssignedTo] = @me) ORDER BY [Microsoft.VSTS.Common.Severity] mode(Recursive,ReturnMatchingChildren)"
-					+ "&runQuery=true"
-					+ "&persistenceId=8da6aa2f-bcba-461e-9535-1e1469958c5a"
-					+ "&__RequestVerificationToken=" + verificationToken,
+                method: "GET",
+                url: "http://tfs.it.volvo.net:8080/tfs/Global3/_api/_wit/workitems?__v=5&ids=" + sprintSettingsItemId,
                 headers: {
-                    "Content-Type": "application/x-www-form-urlencoded"
+                    "Content-Type": "application/json"
                 },
                 onload: function (xhr) {
 
@@ -128,92 +126,133 @@
                         $descTd.tfsAuthLink();
                         return;
                     }
-					
-                    var rows = $.parseJSON(xhr.response).payload.rows;
 
-                    var shortcuts = [];
+                    var fields = $.parseJSON(xhr.response).__wrappedArray[0].fields;
+                    var title = fields["1"];
 
-                    var currentParent = {};
+                    var iterations = title
+                        .split(";")
+                        .filter(function(elm) {
+                            return elm.toUpperCase().indexOf("ITERATIONS:") > -1
+                                || elm.toUpperCase().indexOf("ITERATION:") > -1;
+                        })[0]
+                        .split(":")[1]
+                        .split(",");
 
-                    $.each(rows, function (i, row) {
-						/*
-						
-						0	  67327,
-						1	  "Bug",
-						2	  132892366,
-						3	  "1 - Critical",
-						4	  "VCE EMEA > Available quantity is not updated in a correct way when parts inventory file is sent",
-						5	  "Committed",
-						6	  1,
-						7	  null,
-						8	  "/Date(1439499600000)/",
-						9	  "Sugak Alexander (Consultant)",
-						10	  "End-Customer",
-						11	  "SEGOT-eCom-CORE\VCE\VCE EMEA\Integration",
-						12	  "SEGOT-eCom-CORE\VCE\VCE EMEA\Stabilization\Stabilization W33 - W35"
+                    var iterationsCondition = "(" + iterations.map(function(elm) {
+                        return "[Target].[System.IterationPath] UNDER '" + elm.trim() + "'";
+                    }).join(" OR ") + ")";
 
-						*/
-                        var itemTitle = row[4];
-						var itemType = row[1];
-						if (itemType == "Product Backlog Item") {
-						    itemType = "PBI";
-						}
-						var itemId = row[0];
-						var hours = parseFloat(row[7]) || 1;
-						if (hours > 8) {
-                            hours = 8;
-                        }
-						
-                        if (itemTitle.indexOf('EPC > ') == 0) {
-                            itemTitle = itemTitle.substr('EPC > '.length);
-                        }
+                    GM_xmlhttpRequest({
+                        method: "POST",
+                        url: "http://tfs.it.volvo.net:8080/tfs/Global3/SEGOT-eCom-CORE/VCE%20Team/_api/_wit/query?__v=3",
+                        data: "wiql=SELECT [System.Id], [System.WorkItemType], [Microsoft.VSTS.Common.BacklogPriority], [Microsoft.VSTS.Common.Severity], [System.Title], [System.State], [Microsoft.VSTS.Scheduling.Effort], [Microsoft.VSTS.Scheduling.RemainingWork], [Volvo.Custom.eCOMCore.FixedDate], [System.AssignedTo], [Volvo.Custom.eCOMCore.CaseOrigin], [System.AreaPath], [System.IterationPath] FROM WorkItemLinks WHERE ([Source].[System.WorkItemType] IN GROUP 'Microsoft.RequirementCategory'  AND  [Source].[System.State] IN ('New', 'Approved', 'Committed', 'Done')) And ([System.Links.LinkType] = 'System.LinkTypes.Hierarchy-Forward') And ([Target].[System.WorkItemType] IN GROUP 'Microsoft.TaskCategory' AND " + iterationsCondition + "  AND  [Target].[System.State] IN ('To Do', 'In Progress', 'Done')  AND  [Target].[System.AreaPath] UNDER 'SEGOT-eCom-CORE\\VCE'  AND  [Target].[System.AssignedTo] = @me) ORDER BY [Microsoft.VSTS.Common.Severity] mode(Recursive,ReturnMatchingChildren)"
+                            + "&runQuery=true"
+                            + "&persistenceId=8da6aa2f-bcba-461e-9535-1e1469958c5a"
+                            + "&__RequestVerificationToken=" + verificationToken,
+                        headers: {
+                            "Content-Type": "application/x-www-form-urlencoded"
+                        },
+                        onload: function (xhr) {
 
-                        if (itemTitle.indexOf('|EPC') >= 0) {
-                            itemTitle = itemTitle.substr(0, itemTitle.length - '|EPC'.length).trim();
-                        }
+                            if (xhr.status == 404 || xhr.status == 401 || xhr.status == 302) {
+                                $descTd.tfsAuthLink();
+                                return;
+                            }
 
-                        var title = itemType + ' #' + itemId + ' - ' + itemTitle;
+                            var rows = $.parseJSON(xhr.response).payload.rows;
 
-                        var task = $.findTask(itemTitle);
+                            var shortcuts = [];
 
-                        if (itemType != "Task") {
-                            currentParent = {
-                                id: itemId,
-                                type: itemType
+                            var currentParent = {};
+
+                            $.each(rows, function (i, row) {
+                                /*
+                                
+                                0	  67327,
+                                1	  "Bug",
+                                2	  132892366,
+                                3	  "1 - Critical",
+                                4	  "VCE EMEA > Available quantity is not updated in a correct way when parts inventory file is sent",
+                                5	  "Committed",
+                                6	  1,
+                                7	  null,
+                                8	  "/Date(1439499600000)/",
+                                9	  "Sugak Alexander (Consultant)",
+                                10	  "End-Customer",
+                                11	  "SEGOT-eCom-CORE\VCE\VCE EMEA\Integration",
+                                12	  "SEGOT-eCom-CORE\VCE\VCE EMEA\Stabilization\Stabilization W33 - W35"
+        
+                                */
+                                var itemTitle = row[4];
+                                var itemType = row[1];
+                                if (itemType == "Product Backlog Item") {
+                                    itemType = "PBI";
+                                }
+                                var itemId = row[0];
+                                var hours = parseFloat(row[7]) || 1;
+                                if (hours > 8) {
+                                    hours = 8;
+                                }
+
+                                if (itemTitle.indexOf('EPC > ') == 0) {
+                                    itemTitle = itemTitle.substr('EPC > '.length);
+                                }
+
+                                if (itemTitle.indexOf('|EPC') >= 0) {
+                                    itemTitle = itemTitle.substr(0, itemTitle.length - '|EPC'.length).trim();
+                                }
+
+                                var title = itemType + ' #' + itemId + ' - ' + itemTitle;
+
+                                var task = $.findTask(itemTitle);
+
+                                if (itemType != "Task") {
+                                    currentParent = {
+                                        id: itemId,
+                                        type: itemType
+                                    };
+                                }
+
+                                var etsDescription = currentParent.type + ' #' + currentParent.id + ' - ' + itemTitle;
+
+                                shortcuts.push({
+                                    s: title,
+                                    p: 'VCESEMEA',
+                                    t: task,
+                                    h: hours,
+                                    o: 0,
+                                    d: etsDescription,
+                                    type: itemType
+                                });
+                            });
+
+                            var buildShortcutHtml = function (s) {
+                                if (s.type != "Task") {
+                                    return '<div style="width:' + $desc.width() + 'px;overflow:hidden;text-overflow:ellipsis" class="ets-shortcut" data-p="' + s.p + '" data-t="' + s.t + '" data-h="' + s.h + '" data-o="' + s.o + '" data-d="' + escape(s.d) + '" data-c="' + s.c + '" title="' + escapeDoubleQuote(s.d) + '">' + s.s + '</div>';
+                                }
+                                return '<div style="padding-left:10px"><a style="width:' + $desc.width() + 'px;display:inline-block;overflow:hidden;text-overflow:ellipsis" class="ets-shortcut" data-p="' + s.p + '" data-t="' + s.t + '" data-h="' + s.h + '" data-o="' + s.o + '" data-d="' + escape(s.d) + '" data-c="' + s.c + '" title="' + escapeDoubleQuote(s.d) + '">' + s.s + '</a></div>';
                             };
+
+                            $.each(shortcuts, function () {
+                                $descTd.append(buildShortcutHtml(this));
+                            });
+
+                            $('.ets-shortcut').etsShortcut();
+                        },
+                        timeout: 15000,
+                        ontimeout: function () {
+                            $descTd.connectionFailedMessage();
                         }
-
-                        var etsDescription = currentParent.type + ' #' + currentParent.id + ' - ' + itemTitle;
-
-                        shortcuts.push({
-                            s: title,
-                            p: 'VCESEMEA',
-                            t: task,
-                            h: hours,
-                            o: 0,
-                            d: etsDescription,
-                            type: itemType
-                        });
                     });
 
-                    var buildShortcutHtml = function (s) {
-                        if (s.type != "Task"){
-							return '<div style="width:' + $desc.width() + 'px;overflow:hidden;text-overflow:ellipsis" class="ets-shortcut" data-p="' + s.p + '" data-t="' + s.t + '" data-h="' + s.h + '" data-o="' + s.o + '" data-d="' + escape(s.d) + '" data-c="' + s.c + '" title="' + escapeDoubleQuote(s.d) + '">' + s.s + '</div>';
-						} 
-                        return '<div style="padding-left:10px"><a style="width:' + $desc.width() + 'px;display:inline-block;overflow:hidden;text-overflow:ellipsis" class="ets-shortcut" data-p="' + s.p + '" data-t="' + s.t + '" data-h="' + s.h + '" data-o="' + s.o + '" data-d="' + escape(s.d) + '" data-c="' + s.c + '" title="' + escapeDoubleQuote(s.d) + '">' + s.s + '</a></div>';
-                    };
-
-                    $.each(shortcuts, function () {
-                        $descTd.append(buildShortcutHtml(this));
-                    });
-
-                    $('.ets-shortcut').etsShortcut();
                 },
-				timeout: 15000,
-				ontimeout: function () {
-					$descTd.connectionFailedMessage();
-				}
-			});
+                timeout: 15000,
+                ontimeout: function () {
+                    $descTd.connectionFailedMessage();
+                }
+            });
+
         },
         onerror: function (xhr) {
             if (xhr.status == 404 || xhr.status == 401 || xhr.status == 302) {
