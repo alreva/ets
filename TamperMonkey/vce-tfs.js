@@ -1,5 +1,5 @@
 ﻿// ==UserScript==
-// @name         VCE TFS ETS reporting
+// @name         VCE TFS ETS Reporting
 // @namespace    http://timeserver
 // @version      0.1
 // @description  this one helps properly reporting ETS with TFS items.

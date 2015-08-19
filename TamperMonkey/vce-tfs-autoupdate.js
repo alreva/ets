@@ -1,11 +1,11 @@
 ﻿// ==UserScript==
-// @name        TFS to ETS Autoupdate
-// @namespace   http://timeserver
-// @author      areva
-// @version     0.1
-
-// @match       timeserver/accountreport.ets
-// @match       ets.sigmaukraine.com:7443/accountreport.ets
+// @name         VCE TFS ETS Reporting Automatic Update
+// @namespace    http://timeserver
+// @version      0.1
+// @description  this one helps properly reporting ETS with TFS items.
+// @author       areva
+// @match        timeserver/accountreport.ets
+// @match        ets.sigmaukraine.com:7443/accountreport.ets
 
 // @grant       GM_xmlhttpRequest
 

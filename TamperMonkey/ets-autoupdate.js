@@ -1,11 +1,12 @@
 ﻿// ==UserScript==
-// @name        TFS to ETS Autoupdate
-// @namespace   http://timeserver
-// @author      areva
-// @version     0.1
 
-// @match       timeserver/accountreport.ets
-// @match       ets.sigmaukraine.com:7443/accountreport.ets
+// @name         ETS Improvements Automatic Update
+// @namespace    http://timeserver
+// @version      0.1
+// @description  this one helps filling out ETS faster.
+// @author       areva
+// @match        timeserver/accountreport.ets
+// @match        ets.sigmaukraine.com:7443/accountreport.ets
 
 // @grant       GM_xmlhttpRequest
 
