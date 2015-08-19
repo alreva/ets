@@ -19,6 +19,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -61,6 +62,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ets-autoupdate.js" />
+    <Content Include="vce-tfs-autoupdate.js" />
+    <Content Include="vce-tfs.js" />
     <Content Include="ets-tfs.js" />
     <Content Include="ets.js" />
     <Content Include="TFSKanbanHideCols.js" />
