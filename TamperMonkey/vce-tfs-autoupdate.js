@@ -12,6 +12,6 @@
 
 // @require		https://code.jquery.com/jquery-2.1.4.min.js
 // @require		http://courses.ischool.berkeley.edu/i290-4/f09/resources/gm_jq_xhr.js
-// @require     https://rawgit.com/alreva/ets/master/TamperMonkey/ets.js
+// @require		https://rawgit.com/alreva/ets/master/TamperMonkey/vce-tfs.js
 
 // ==/UserScript==
