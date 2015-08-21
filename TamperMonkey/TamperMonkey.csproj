@@ -70,6 +70,9 @@
     <Content Include="ets.js" />
     <Content Include="TFSKanbanHideCols.js" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="ets-tfs-mappings.json" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

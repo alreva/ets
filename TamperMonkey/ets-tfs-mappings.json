@@ -1,0 +1,34 @@
+[
+    {
+        "area": "SEGOT-eCom-CORE\\VCE",
+        "iterations": [
+            "SEGOT-eCom-CORE\\VCE\\VCE EMEA\\Stabilization\\Stabilization W33 - W35"
+        ],
+        "project": "VCESEMEA",
+        "defaultTask": "Development, Web Shop Features",
+        "tasks": [
+            [ "- Requirements analysis and clarification", "Development, Web Shop Features" ],
+            [ "- Technical design", "Development, Web Shop Features" ],
+            [ "- Technical design review", "TL Activities" ],
+            [ "- Unit tests development", "Development, Web Shop Features" ],
+            [ "- Development", "Development, Web Shop Features" ],
+            [ "- Code review", "TL Activities" ],
+            [ " (CODE REVIEW", "TL Activities" ],
+            [ "- UI tests", "Automation tests development" ],
+            [ "- Manual testing", "Testing (Manual)" ],
+            [ "- Documentation update", "Development, Web Shop Features" ],
+            [ "(DOCUMENTATION REVIEW)", "TL Activities" ],
+            [ "- Documentation review", "TL Activities" ]
+        ],
+        descriptionPattern: "parent.type + ' #' + parent.id + ' - ' + itemTitle"
+    },
+    {
+        "area": "SEGOT-eCom-CORE\\CORE\\Technical Debt",
+        "iterations": [ 
+            "SEGOT-eCom-CORE\\Technical Debt\\Iteration 2" ],
+        "project": "VECOMMA",
+        "defaultTask": "MA - Enhancements (WBS is mandatory)",
+        "tasks": [ ],
+        descriptionPattern: "'WBS <CORE-Tech-Debt> TFS ' + parent.type + ' #' + parent.id + ' - ' + itemTitle"
+    }
+]
