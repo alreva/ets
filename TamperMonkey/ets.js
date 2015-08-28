@@ -45,7 +45,16 @@
 
             if (r.tag) {
                 var $selectedTagOption = $('select.tag option:contains("' + r.tag + '")');
-                getTagSelect().val($selectedTagOption.val());
+                var $tagSelect = $('select.tag');
+				$tagSelect.val($selectedTagOption.val());
+				var changeEvent = document.createEvent("HTMLEvents");
+				changeEvent.initEvent("change", true, true);
+				$tagSelect[0].dispatchEvent(changeEvent);
+				
+				//var evt = $.Event("change", {"bubbles": true, "cancelable": true});
+				//$tagSelect.trigger(evt);
+				
+				//$tagSelect.change();
             }
 
             $task.change();

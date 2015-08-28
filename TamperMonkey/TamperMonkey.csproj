@@ -65,7 +65,6 @@
     <Content Include="ServiceFiles\ets-autoupdate.js" />
     <Content Include="ServiceFiles\vce-tfs-dev.js" />
     <Content Include="ServiceFiles\vce-tfs-autoupdate.js" />
-    <Content Include="vce-tfs.js" />
     <Content Include="ets-tfs.js" />
     <Content Include="ets.js" />
     <Content Include="TFSKanbanHideCols.js" />

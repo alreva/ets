@@ -1,108 +1,147 @@
-﻿var etsTfsX = (function ($, GM_xmlhttpRequest) {
+﻿// ==UserScript==
+// @name         TFS ETS Reporting
+// @namespace    http://timeserver
+// @version      0.2
+// @description  this one helps properly reporting ETS with TFS items.
+// @author       areva
+// @match        timeserver/accountreport.ets
+// @match        timeserver.i.sigmaukraine.com/accountreport.ets
+// @match        ets.sigmaukraine.com:7443/accountreport.ets
 
-    (function ($) {
-        var $proj = $('#effortRecordProjectCode');
-        var $task = $('#effortRecordIssueCode');
-        var $time = $('[name="effortRecordEffort"]');
-        var $ot = $('[name="effortRecordEffortOvertime"]');
-        var $desc = $('[name="effortRecordDescription"]');
-        var $costC = $('#costCenterAccount');
+// @grant        GM_xmlhttpRequest
 
-        var pasteRecord = function (r) {
+// @require      https://code.jquery.com/jquery-2.1.4.min.js
 
-            $proj.val(r.p);
-            $time.val(r.h);
-            $ot.val(r.o);
-            $desc.val(r.d);
+// ==/UserScript==
 
-            if (r.c) {
-                $costC.val(r.c);
+(function ($) {
+
+    var sprintSettingsItemId = 73204;
+
+    var $proj = $('#effortRecordProjectCode');
+    var $task = $('#effortRecordIssueCode');
+    var $time = $('[name="effortRecordEffort"]');
+    var $ot = $('[name="effortRecordEffortOvertime"]');
+    var $desc = $('[name="effortRecordDescription"]');
+    var $costC = $('#costCenterAccount');
+
+    var pasteRecord = function (r) {
+
+        $proj.val(r.p);
+        $time.val(r.h);
+        $ot.val(r.o);
+        $desc.val(r.d);
+
+        if (r.c) {
+            $costC.val(r.c);
+        }
+
+        $proj.change();
+
+        setTimeout(function () {
+            var $selectedOption = $('option:contains("' + r.t + '")');
+            $task.val($selectedOption.val());
+            $task.change();
+
+            if (r.tag) {
+                var $selectedTagOption = $('select.tag option:contains("' + r.tag + '")');
+                var $tagSelect = $('select.tag');
+                $tagSelect.val($selectedTagOption.val());
+                var changeEvent = document.createEvent("HTMLEvents");
+                changeEvent.initEvent("change", true, true);
+                $tagSelect[0].dispatchEvent(changeEvent);
             }
 
-            $proj.change();
+        }, 1000);
+    };
 
-            setTimeout(function () {
-                var $selectedOption = $('option:contains("' + r.t + '")');
-                $task.val($selectedOption.val());
-                $task.change();
-            }, 1000);
-        };
+    var parseJsonOverEval = function (str) {
+        var result = null;
 
-        $.fn.etsShortcut = function () {
-
-            $(this).click(function () {
-
-                var $shortcut = $(this);
-
-                pasteRecord({
-                    p: $shortcut.data('p'),
-                    h: $shortcut.data('h'),
-                    o: $shortcut.data('o'),
-                    d: unescape($shortcut.data('d')),
-                    c: $shortcut.data('c'),
-                    t: $shortcut.data('t')
-                });
-            });
-        };
-
-        $.fn.tfsAuthLink = function () {
-            $(this).append('Authenticate by following <a href="http://tfs.it.volvo.net:8080/tfs/Global/SEGOT-eCom-VolvoPentaShop/EPC%202%20Project%20Board/_backlogs">this link</a> to be able to copy-paste from TFS');
-        };
-
-        $.fn.connectionFailedMessage = function () {
-            $(this).append('!Failed to connect to TFS. Please check if you have VPN connection enabled and the  (<a href="http://tfs.it.volvo.net:8080/tfs/Global/SEGOT-eCom-VolvoPentaShop">TFS Web</a>) is accessible.');
-        };
-
-        var tfsActionMappings = [
-              { pattern: 'User Recognition over VPPN', task: 'DEV - User Recognition via VPPN (unplanned)' }
-            , { pattern: 'Catalog - POC Stock Status', task: 'DEV - Ctlg: POC Stock Status (unplanned)' }
-            , { pattern: 'Architecture artifacts', task: 'DEV - Architecture Artifacts' }
-            , { pattern: 'Home page - Provide a link from ROW catalog to selection or home page', task: 'DEV - Home: Link ROW' }
-            , { pattern: 'Dealer locator', task: 'DEV - Home: Link ROW' }
-            , { pattern: 'Set Model / Serial Number filters in URL', task: 'DEV - Home: Set Model' }
-            , { pattern: 'Catalog POC Prices', task: 'DEV - Ctlg: Price POC' }
-            , { pattern: 'Catalog - Calculate price based on price calculation strategy', task: 'DEV - Ctlg: Price Calc Strategy' }
-            , { pattern: 'Prepared Search', task: 'DEV - Ctlg: Search' }
-            , { pattern: 'Cart - POC Prices', task: 'DEV - Cart: POC Price' }
-            , { pattern: 'Print cart', task: 'DEV - Cart: Print' }
-            , { pattern: 'Export cart', task: 'DEV - Cart: Export' }
-            , { pattern: 'US Checkout', task: 'DEV - Checkout' }
-            , { pattern: 'Bulletins', task: 'DEV - Bulletins' }
-            , { pattern: 'Browsers', task: 'DEV - Browsers' }
-            , { pattern: 'Catalog - Accept links with filters from VPPN', task: 'DEV - Ctlg: Filters' }
-            , { pattern: 'Add parts w/o prices', task: 'DEV - Cart: No Prices' }
-            , { pattern: 'Catalog - Hide inventory', task: 'DEV - Ctlg: Hide Inventory' }
-            , { pattern: 'Kits', task: 'DEV - Ctlg: Product Details Kits' }
-            , { pattern: 'User recognition', task: 'DEV - User Recognition' }
-            , { pattern: 'Select parts from images', task: 'DEV - Ctlg: Select Parts From Images' }
-            , { pattern: 'Unplanned changes', task: 'Unplanned Changes - Nov 2014' }
-            , { pattern: 'Demo Jan 8', task: 'Demo Changes - Jan 8' }
-            , { pattern: 'Demo Jan 14', task: 'Demo Changes - Jan 8' }
-            , { pattern: 'Demo Jan 27', task: 'Demo Changes - Jan 29' }
-            , { pattern: 'Demo Feb 4', task: 'Demo Changes - Feb 4' }
-            , { pattern: 'Help files', task: 'DEV - Help Files' }
-            , { pattern: 'Fix > ', task: 'Issues fixing' }
-            , { pattern: 'UAT', task: 'Acceptance testing support' }
-        ];
-
-        $.findTask = function (itemTitle) {
-            var taskCandidates = tfsActionMappings.filter(function (elm) {
-                return itemTitle.indexOf(elm.pattern) >= 0;
-            });
-
-            return taskCandidates.length > 0
-                ? taskCandidates[0].task
-                : '';
+        var parse = function (json) {
+            result = json;
         }
-    })($);
 
-    var $desc = $('[name="effortRecordDescription"]');
+        eval("parse(" + str + ");");
+        return result;
+    }
+
+    var parseJsonDate = function (s) {
+        var a;
+        if (typeof s === 'string') {
+            a = /\/Date\((\d*)\)\//.exec(s);
+            if (a) {
+                return new Date(+a[1]);
+            }
+        }
+        return undefined;
+    };
+
+    var pickMapping = function (mappings, item) {
+        var iterationPath = item[12];
+        var areaPath = item[11];
+
+        var mappingCandidates = mappings
+            .filter(function (elm) {
+                return areaPath.toUpperCase().indexOf(elm.area.toUpperCase()) === 0
+                    && elm.iterations.filter(function (elm) { return iterationPath.toUpperCase().indexOf(elm.toUpperCase()) === 0 }).length > 0;
+            });
+
+        if (mappingCandidates.length > 0) {
+            return mappingCandidates[0];
+        }
+
+        return undefined;
+    }
+
+    $.fn.etsShortcut = function () {
+
+        $(this).click(function () {
+
+            var $shortcut = $(this);
+
+            pasteRecord({
+                p: $shortcut.data('p'),
+                h: $shortcut.data('h'),
+                o: $shortcut.data('o'),
+                d: unescape($shortcut.data('d')),
+                c: $shortcut.data('c'),
+                t: $shortcut.data('t'),
+                tag: $shortcut.data('tag')
+            });
+        });
+    };
+
+    $.fn.tfsAuthLink = function () {
+        $(this).append('Authenticate by following <a href="http://tfs.it.volvo.net:8080/tfs/Global3/SEGOT-eCom-CORE/VCE%20Team/">this link</a> to be able to copy-paste from TFS');
+    };
+
+    $.fn.connectionFailedMessage = function () {
+        $(this).append('!Failed to connect to TFS. Please check if you have VPN connection enabled and the  (<a href="http://tfs.it.volvo.net:8080/tfs/Global3/SEGOT-eCom-CORE/VCE%20Team/">TFS Web</a>) is accessible.');
+    };
+
+    var findTask = function (mapping, itemTitle) {
+        var taskCandidates = mapping.tasks.filter(function (elm) {
+            return itemTitle.toUpperCase().indexOf(elm[0].toUpperCase()) >= 0;
+        });
+
+        return taskCandidates.length > 0
+            ? taskCandidates[0][1]
+            : mapping.defaultTask;
+    }
+
+    var escapeDoubleQuote = function (s) {
+        return s;
+    }
+
+
     var $descTd = $desc.closest('TD');
 
     GM_xmlhttpRequest({
         method: "GET",
-        url: "http://tfs.it.volvo.net:8080/tfs/Global/SEGOT-eCom-VolvoPentaShop/EPC%202%20Project%20Board/_workitems",
+        url: "http://tfs.it.volvo.net:8080/tfs/Global3/SEGOT-eCom-CORE/VCE%20Team/_workitems",
         onload: function (xhr) {
+
             var verificationToken = '';
 
             $.parseHTML(xhr.response).each(function (elm) {
@@ -112,75 +151,163 @@
             });
 
             GM_xmlhttpRequest({
-                method: "POST",
-                url: "http://tfs.it.volvo.net:8080/tfs/Global/SEGOT-eCom-VolvoPentaShop/_api/_wit/query?__v=3",
-                data: "wiql=SELECT [System.Id], [System.Title], [Microsoft.VSTS.Scheduling.RemainingWork] FROM WorkItems WHERE [System.TeamProject] = @project AND [System.WorkItemType] = 'Task' AND [System.State] <> 'Deleted' AND [System.State] <> 'Removed' AND ([System.IterationPath] UNDER 'SEGOT-eCom-VolvoPentaShop\\2014 - EPC 2\\EPC - Iteration 7 (W8 - W9)' OR [System.IterationPath] UNDER 'SEGOT-eCom-VolvoPentaShop\\2014 - EPC 2\\EPC - Iteration 8 (W10 - W11)') AND [System.AssignedTo] = @me ORDER BY [System.Title]"
-                + "&runQuery=true"
-                + "&persistenceId=8da6aa2f-bcba-461e-9535-1e1469958c5a"
-                + "&__RequestVerificationToken=" + verificationToken,
+                method: "GET",
+                url: "http://tfs.it.volvo.net:8080/tfs/Global3/_api/_wit/workitems?__v=5&ids=" + sprintSettingsItemId,
                 headers: {
-                    "Content-Type": "application/x-www-form-urlencoded"
+                    "Content-Type": "application/json"
                 },
                 onload: function (xhr) {
+
                     if (xhr.status == 404 || xhr.status == 401 || xhr.status == 302) {
                         $descTd.tfsAuthLink();
                         return;
                     }
 
-                    var rows = $.parseJSON(xhr.response).payload.rows;
+                    var mappingsAttachment = $.parseJSON(xhr.response).__wrappedArray[0]
+                        .files
+                        .filter(function (elm) {
+                            return elm.OriginalName == "ets-tfs-mappings.json"
+                                && parseJsonDate(elm.RemovedDate) > new Date();
+                        })[0];
 
-                    var shortcuts = [];
+                    GM_xmlhttpRequest({
+                        method: "GET",
+                        url: "http://tfs.it.volvo.net:8080/tfs/Global3/_api/_wit/DownloadAttachment?fileName=attachment.dat&attachmentId=" + mappingsAttachment.ExtID + "&contentOnly=true&__v=5",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        onload: function (xhr) {
 
-                    $.each(rows, function (i, row) {
+                            if (xhr.status == 404 || xhr.status == 401 || xhr.status == 302) {
+                                $descTd.tfsAuthLink();
+                                return;
+                            }
 
-                        var itemTitle = row[1];
-                        if (itemTitle.indexOf('EPC > ') == 0) {
-                            itemTitle = itemTitle.substr('EPC > '.length);
+                            var etsTfsMappings = parseJsonOverEval(xhr.response);
+
+                            var iterationsAndAreasCondition = "(" + etsTfsMappings.map(function (elm) {
+
+                                var iterationsCondition = "(" + elm.iterations.map(function (elm) {
+                                    return "[Target].[System.IterationPath] UNDER '" + elm + "'";
+                                }).join(" OR ") + ")";
+
+                                return "(" + iterationsCondition + " AND [Target].[System.AreaPath] UNDER '" + elm.area + "')";
+                            }).join(" OR ") + ")";
+
+                            GM_xmlhttpRequest({
+                                method: "POST",
+                                url: "http://tfs.it.volvo.net:8080/tfs/Global3/SEGOT-eCom-CORE/VCE%20Team/_api/_wit/query?__v=3",
+                                data: "wiql=SELECT [System.Id], [System.WorkItemType], [Microsoft.VSTS.Common.BacklogPriority], [Microsoft.VSTS.Common.Severity], [System.Title], [System.State], [Microsoft.VSTS.Scheduling.Effort], [Microsoft.VSTS.Scheduling.RemainingWork], [Volvo.Custom.eCOMCore.FixedDate], [System.AssignedTo], [Volvo.Custom.eCOMCore.CaseOrigin], [System.AreaPath], [System.IterationPath] FROM WorkItemLinks WHERE ([Source].[System.WorkItemType] IN GROUP 'Microsoft.RequirementCategory'  AND  [Source].[System.State] IN ('New', 'Approved', 'Committed', 'Done')) And ([System.Links.LinkType] = 'System.LinkTypes.Hierarchy-Forward') And ([Target].[System.WorkItemType] IN GROUP 'Microsoft.TaskCategory' AND " + iterationsAndAreasCondition + "  AND  [Target].[System.State] IN ('To Do', 'In Progress', 'Done')  AND  [Target].[System.AssignedTo] = @me) ORDER BY [Microsoft.VSTS.Common.Severity] mode(Recursive,ReturnMatchingChildren)"
+                                    + "&runQuery=true"
+                                    + "&persistenceId=8da6aa2f-bcba-461e-9535-1e1469958c5a"
+                                    + "&__RequestVerificationToken=" + verificationToken,
+                                headers: {
+                                    "Content-Type": "application/x-www-form-urlencoded"
+                                },
+                                onload: function (xhr) {
+
+                                    if (xhr.status == 404 || xhr.status == 401 || xhr.status == 302) {
+                                        $descTd.tfsAuthLink();
+                                        return;
+                                    }
+
+                                    var rows = $.parseJSON(xhr.response).payload.rows;
+
+                                    var shortcuts = [];
+
+                                    var parent = {};
+
+                                    $.each(rows, function (i, row) {
+
+                                        var mapping = pickMapping(etsTfsMappings, row);
+
+                                        var itemTitle = row[4];
+                                        var itemType = row[1];
+                                        if (itemType == "Product Backlog Item") {
+                                            itemType = "PBI";
+                                        }
+                                        var itemId = row[0];
+                                        var hours = parseFloat(row[7]) || 1;
+                                        if (hours > 8) {
+                                            hours = 8;
+                                        }
+
+                                        var title = itemType + ' #' + itemId + ' - ' + itemTitle;
+
+                                        var task = findTask(mapping, itemTitle);
+
+                                        if (itemType != "Task") {
+                                            parent = {
+                                                id: itemId,
+                                                type: itemType,
+                                                title: itemTitle
+                                            };
+                                        }
+
+                                        var etsDescription = "";
+                                        try {
+                                            eval("etsDescription = " + mapping.descriptionPattern + ";");
+
+                                        } catch (e) {
+                                            console.log("Failed to build ETS Description field because of an error. Work item title will be used instead. Error details: " + e);
+                                            etsDescription = itemTitle;
+                                        }
+
+                                        shortcuts.push({
+                                            s: title,
+                                            p: mapping.project,
+                                            t: task,
+                                            h: hours,
+                                            o: 0,
+                                            d: etsDescription,
+                                            type: itemType,
+                                            tag: mapping.tag
+                                        });
+                                    });
+
+                                    var buildShortcutHtml = function (s) {
+                                        if (s.type != "Task") {
+                                            return '<div style="width:' + $desc.width() + 'px;overflow:hidden;text-overflow:ellipsis" class="ets-shortcut" data-p="' + s.p + '" data-t="' + s.t + '" data-h="' + s.h + '" data-o="' + s.o + '" data-d="' + escape(s.d) + '" data-c="' + s.c + '" data-tag="' + (s.tag || "") + '" title="' + escapeDoubleQuote(s.d) + '">' + s.s + '</div>';
+                                        }
+                                        return '<div style="padding-left:10px"><a style="width:' + $desc.width() + 'px;display:inline-block;overflow:hidden;text-overflow:ellipsis" class="ets-shortcut" data-p="' + s.p + '" data-t="' + s.t + '" data-h="' + s.h + '" data-o="' + s.o + '" data-d="' + escape(s.d) + '" data-c="' + s.c + '" data-tag="' + (s.tag || "") + '" title="' + escapeDoubleQuote(s.d) + '">' + s.s + '</a></div>';
+                                    };
+
+                                    $.each(shortcuts, function () {
+                                        $descTd.append(buildShortcutHtml(this));
+                                    });
+
+                                    $('.ets-shortcut').etsShortcut();
+                                },
+                                timeout: 15000,
+                                ontimeout: function () {
+                                    $descTd.connectionFailedMessage();
+                                }
+                            });
+
+                        },
+                        timeout: 15000,
+                        ontimeout: function () {
+                            $descTd.connectionFailedMessage();
                         }
-
-                        if (itemTitle.indexOf('|EPC') >= 0) {
-                            itemTitle = itemTitle.substr(0, itemTitle.length - '|EPC'.length).trim();
-                        }
-
-                        var title = 'TFS #' + row[0] + ' - ' + itemTitle;
-
-                        var task = $.findTask(itemTitle);
-
-                        var hours = row[2] || 0;
-                        if (hours > 8) {
-                            hours = 8;
-                        }
-
-                        shortcuts.push({
-                            s: title,
-                            p: 'VEPC2',
-                            t: task,
-                            h: hours,
-                            o: 0,
-                            d: title
-                        });
                     });
 
-                    var buildShortcutHtml = function (s) {
-                        return '<div><a class="ets-shortcut" data-p="' + s.p + '" data-t="' + s.t + '" data-h="' + s.h + '" data-o="' + s.o + '" data-d="' + escape(s.d) + '" data-c="' + s.c + '">' + s.s + '</a></div>';
-                    };
-
-                    $.each(shortcuts, function () {
-                        $descTd.append(buildShortcutHtml(this));
-                    });
-
-                    $('.ets-shortcut').etsShortcut();
+                },
+                timeout: 15000,
+                ontimeout: function () {
+                    $descTd.connectionFailedMessage();
                 }
             });
+
         },
         onerror: function (xhr) {
             if (xhr.status == 404 || xhr.status == 401 || xhr.status == 302) {
                 $descTd.tfsAuthLink();
             }
         },
-        timeout: 5000,
+        timeout: 15000,
         ontimeout: function () {
             $descTd.connectionFailedMessage();
         }
     });
-});
+
+})(jQuery);

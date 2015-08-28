@@ -20,7 +20,7 @@
             [ "(DOCUMENTATION REVIEW)", "TL Activities" ],
             [ "- Documentation review", "TL Activities" ]
         ],
-        descriptionPattern: "parent.type + ' #' + parent.id + ' - ' + itemTitle"
+        "descriptionPattern": "parent.type + ' #' + parent.id + ' - ' + itemTitle"
     },
     {
         "area": "SEGOT-eCom-CORE\\CORE\\Technical Debt",
@@ -29,6 +29,27 @@
         "project": "VECOMMA",
         "defaultTask": "MA - Enhancements (WBS is mandatory)",
         "tasks": [ ],
-        descriptionPattern: "'WBS <CORE-Tech-Debt> TFS ' + parent.type + ' #' + parent.id + ' - ' + itemTitle"
+        "descriptionPattern": "'WBS <CORE-Tech-Debt> ' + parent.type + ' #' + parent.id + ' - ' + itemTitle"
+    },
+    {
+        "area": "SEGOT-eCom-CORE\\Robinson",
+        "iterations": [ 
+            "SEGOT-eCom-CORE\\Robinson\\Iteration 0",
+			"SEGOT-eCom-CORE\\Robinson\\Sprint 1"],
+        "project": "VDCMB",
+        "defaultTask": "none",
+        "tasks": [],
+        "descriptionPattern": "parent.type + ' #' + parent.id + ' - ' + parent.title + ' - ' + itemTitle"
+    },
+    {
+        "area": "SEGOT-eCom-CORE",
+        "iterations": [ 
+            "SEGOT-eCom-CORE\\Robinson\\Iteration 0",
+			"SEGOT-eCom-CORE\\Robinson\\Sprint 1"],
+        "project": "VECORE",
+        "defaultTask": "none",
+		"tag": "Daimler - Mercedes",
+        "tasks": [],
+        "descriptionPattern": "parent.type + ' #' + parent.id + ' - ' + parent.title + ' - ' + itemTitle"
     }
 ]
