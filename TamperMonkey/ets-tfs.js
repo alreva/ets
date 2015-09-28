@@ -91,7 +91,14 @@
             return mappingCandidates[0];
         }
 
-        return undefined;
+        return {
+            "area": areaPath,
+            "iterations": [iterationPath],
+            "project": undefined,
+            "defaultTask": "none",
+            "tasks": [],
+            "descriptionPattern": "parent.type + ' #' + parent.id + ' ' + title"
+        };
     }
 
     $.fn.etsShortcut = function () {
@@ -121,6 +128,7 @@
     };
 
     var findTask = function (mapping, itemTitle) {
+
         var taskCandidates = mapping.tasks.filter(function (elm) {
             return itemTitle.toUpperCase().indexOf(elm[0].toUpperCase()) >= 0;
         });

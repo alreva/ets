@@ -1,11 +1,11 @@
 ﻿// ==UserScript==
-
 // @name         ETS Improvements
 // @namespace    http://timeserver
 // @version      0.1
 // @description  this one helps filling out ETS faster.
 // @author       areva
 // @match        timeserver/accountreport.ets
+// @match        timeserver.i.sigmaukraine.com/accountreport.ets
 // @match        ets.sigmaukraine.com:7443/accountreport.ets
 
 // @grant        GM_xmlhttpRequest
@@ -22,7 +22,7 @@
     var $ot = $('[name="effortRecordEffortOvertime"]');
     var $desc = $('[name="effortRecordDescription"]');
     var $costC = $('#costCenterAccount');
-    var getTagSelect = function() { return $('select.tag') };
+    var getTagSelect = function () { return $('select.tag') };
 
 
     var pasteRecord = function (r) {
@@ -46,15 +46,15 @@
             if (r.tag) {
                 var $selectedTagOption = $('select.tag option:contains("' + r.tag + '")');
                 var $tagSelect = $('select.tag');
-				$tagSelect.val($selectedTagOption.val());
-				var changeEvent = document.createEvent("HTMLEvents");
-				changeEvent.initEvent("change", true, true);
-				$tagSelect[0].dispatchEvent(changeEvent);
-				
-				//var evt = $.Event("change", {"bubbles": true, "cancelable": true});
-				//$tagSelect.trigger(evt);
-				
-				//$tagSelect.change();
+                $tagSelect.val($selectedTagOption.val());
+                var changeEvent = document.createEvent("HTMLEvents");
+                changeEvent.initEvent("change", true, true);
+                $tagSelect[0].dispatchEvent(changeEvent);
+
+                //var evt = $.Event("change", {"bubbles": true, "cancelable": true});
+                //$tagSelect.trigger(evt);
+
+                //$tagSelect.change();
             }
 
             $task.change();
@@ -259,10 +259,10 @@
         });
 
         var customStyle =
-            ".ets-day-filled {background-color:#dff0d8} " +
-                ".ets-day-not-filled-top TD {border-top: 1px dotted #999;} " +
-                ".ets-day-not-filled-bottom TD {border-bottom: 1px dotted #999} " +
-                ".ets-day-not-filled-top TD:nth-child(2) {text-align: right; font-weight:bold; color:#eea236} ";
+            ".ets-day-filled:not(.TableRowDeclined) {background-color:#dff0d8} " +
+            ".ets-day-not-filled-top TD {border-top: 1px dotted #999;} " +
+            ".ets-day-not-filled-bottom TD {border-bottom: 1px dotted #999} " +
+            ".ets-day-not-filled-top TD:nth-child(2) {text-align: right; font-weight:bold; color:#eea236} ";
 
         $.addGlobalStyle(customStyle);
     }

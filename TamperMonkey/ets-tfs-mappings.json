@@ -2,7 +2,7 @@
     {
         "area": "SEGOT-eCom-CORE\\VCE",
         "iterations": [
-            "SEGOT-eCom-CORE\\VCE\\VCE EMEA\\Stabilization\\Stabilization W33 - W35"
+            "SEGOT-eCom-CORE\\VCE\\VCE EMEA\\Stabilization\\UAT"
         ],
         "project": "VCESEMEA",
         "defaultTask": "Development, Web Shop Features",
@@ -34,22 +34,20 @@
     {
         "area": "SEGOT-eCom-CORE\\Robinson",
         "iterations": [ 
-            "SEGOT-eCom-CORE\\Robinson\\Iteration 0",
-			"SEGOT-eCom-CORE\\Robinson\\Sprint 1"],
+			"SEGOT-eCom-CORE\\Robinson\\Sprint 2"],
         "project": "VDCMB",
         "defaultTask": "none",
         "tasks": [],
-        "descriptionPattern": "parent.type + ' #' + parent.id + ' - ' + parent.title + ' - ' + itemTitle"
+        "descriptionPattern": "parent.type + ' #' + parent.id + ' ' + title"
     },
     {
         "area": "SEGOT-eCom-CORE",
         "iterations": [ 
-            "SEGOT-eCom-CORE\\Robinson\\Iteration 0",
-			"SEGOT-eCom-CORE\\Robinson\\Sprint 1"],
+			"SEGOT-eCom-CORE\\Robinson\\Sprint 2"],
         "project": "VECORE",
         "defaultTask": "none",
 		"tag": "Daimler - Mercedes",
         "tasks": [],
-        "descriptionPattern": "parent.type + ' #' + parent.id + ' - ' + parent.title + ' - ' + itemTitle"
+        "descriptionPattern": "parent.type + ' #' + parent.id + ' ' + title"
     }
 ]
