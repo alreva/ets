@@ -134,8 +134,8 @@
     };
 
     const pickMapping = (mappings, item) => {
-        const iterationPath = item[12];
-        const areaPath = item[11];
+        const iterationPath = item[13];
+        const areaPath = item[12];
 
         const mappingCandidates = mappings
             .filter(elm => areaPath.toUpperCase().indexOf(elm.area.toUpperCase()) === 0
@@ -333,7 +333,7 @@
                 .join(" OR ")})`;
 
             const url = "http://tfs.it.volvo.net:8080/tfs/Global3/SEGOT-eCom-CORE/_api/_wit/query?__v=3";
-            const data = `wiql=SELECT [System.Id], [System.WorkItemType], [Microsoft.VSTS.Common.BacklogPriority], [Microsoft.VSTS.Common.Severity], [System.Title], [System.State], [Microsoft.VSTS.Scheduling.Effort], [Microsoft.VSTS.Scheduling.RemainingWork], [Volvo.Custom.eCOMCore.FixedDate], [System.AssignedTo], [Volvo.Custom.eCOMCore.CaseOrigin], [System.AreaPath], [System.IterationPath] FROM WorkItemLinks WHERE ([Source].[System.WorkItemType] IN GROUP 'Microsoft.RequirementCategory'  AND  [Source].[System.State] IN ('New', 'Approved', 'Committed', 'Done')) And ([System.Links.LinkType] = 'System.LinkTypes.Hierarchy-Forward') And ([Target].[System.WorkItemType] IN GROUP 'Microsoft.TaskCategory' AND ${iterationsAndAreasCondition}  AND  [Target].[System.State] IN ('To Do', 'In Progress', 'Done')  AND  [Target].[System.AssignedTo] = @me) ORDER BY [Microsoft.VSTS.Common.Severity] mode(Recursive,ReturnMatchingChildren)&runQuery=true&persistenceId=8da6aa2f-bcba-461e-9535-1e1469958c5a&__RequestVerificationToken=${verificationToken}`
+            const data = `wiql=SELECT [System.Id], [System.WorkItemType], [Microsoft.VSTS.Common.BacklogPriority], [Microsoft.VSTS.Common.Severity], [System.Title], [System.State], [Microsoft.VSTS.Scheduling.Effort], [Microsoft.VSTS.Scheduling.RemainingWork], [Volvo.Custom.eCOMCore.FixedDate], [System.AssignedTo], [Volvo.Custom.eCOMCore.CaseOrigin], [System.AreaPath], [System.IterationPath] FROM WorkItemLinks WHERE ([Source].[System.WorkItemType] IN GROUP 'Microsoft.RequirementCategory'  AND  [Source].[System.State] IN ('New', 'Approved', 'Committed', 'Done')) And ([System.Links.LinkType] = 'System.LinkTypes.Hierarchy-Forward') And ([Target].[System.WorkItemType] IN GROUP 'Microsoft.TaskCategory' AND ${iterationsAndAreasCondition}  AND  [Target].[System.State] IN ('To Do', 'In Progress', 'Done')  AND  [Target].[System.AssignedTo] = @me) ORDER BY [Microsoft.VSTS.Common.Severity] mode(Recursive,ReturnMatchingChildren)&runQuery=true&__RequestVerificationToken=${verificationToken}`
 
             GM_xmlhttpRequest({
                 method: "POST",
@@ -376,10 +376,30 @@
 
             const mapping = pickMapping(etsTfsMappings, row);
 
-            const itemTitle = row[4];
+/*
+
+            0: 110965
+            1: "Bug"
+            2:"SEGOT-eCom-CORE"
+            3:1999999808
+            4:"3 - Medium"
+            5:"TSU > WAT > The system does not notify the user when he creates a new product with existing productid "
+            6:"Done"
+            7:null
+            8:null
+            9:null
+            10:"Vorona Yulia <VCN\a080033>"
+            11:"Stabilization"
+            12:"SEGOT-eCom-CORE\TSU\Common\Okelia WAT"
+            13:"SEGOT-eCom-CORE\Sprint 22"
+
+ */
+
+
+            const itemTitle = row[5];
             const itemType = row[1] == "Product Backlog Item" ? "PBI" : row[1];
             const itemId = row[0];
-            const hours = Math.min(parseFloat(row[7]) || 1, 8);
+            const hours = Math.min(parseFloat(row[8]) || 1, 8);
             const title = `${itemType} #${itemId} - ${itemTitle}`;
             const task = findTask(mapping, itemTitle);
 
@@ -464,6 +484,7 @@
         buildTfsTaskControls(rows, etsTfsMappings);
     })
     .catch(e => {
+        console.error(e);
         hideSpinner();
         switch (e.reason) {
             case errorReasons.timeout:
