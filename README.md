@@ -8,6 +8,7 @@ The TamperMonkey folder contains the scripts improving ETS functionality:
 2. Use the ets.user.js to add controls that help you filling in ETS records faster.
 
 To install hte scripts you need to:
+
 1. Have Chrome browser :)
 2. Install TemperMonkey extension to Chrome
 3. Go to the file location on GitHub, e.g. to https://github.com/alreva/ets/blob/master/TamperMonkey/ets.user.js
