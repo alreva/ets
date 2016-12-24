@@ -10,7 +10,7 @@ The TamperMonkey folder contains the scripts improving ETS functionality:
 To install the scripts you need to:
 
 1. Have Chrome browser :)
-2. Install TemperMonkey extension to Chrome
+2. Install TemperMonkey extension to Chrome (see http://tampermonkey.net/)
 3. Go to the file location on GitHub, e.g. to https://github.com/alreva/ets/blob/master/TamperMonkey/ets.user.js
 4. Click the RAW button.
 
