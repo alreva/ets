@@ -7,7 +7,7 @@ The TamperMonkey folder contains the scripts improving ETS functionality:
 1. Use the ETS-TFS.user.js to connect ETS to the TFS records in ECom platform.
 2. Use the ets.user.js to add controls that help you filling in ETS records faster.
 
-To install hte scripts you need to:
+To install the scripts you need to:
 
 1. Have Chrome browser :)
 2. Install TemperMonkey extension to Chrome
