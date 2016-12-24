@@ -1,6 +1,6 @@
 # ets
 
-This repo is about the work being done towards ETS.
+This repository is about the work being done towards ETS.
 
 The TamperMonkey folder contains the scripts improving ETS functionality:
 
@@ -17,4 +17,4 @@ To install the scripts you need to:
 When doing that the TamperMonkey will suggest you to install the user script to your browser.
 You should confirm the installation.
 
-After doing that the script will sart working once you go to ETS :)
+After doing that the script will start working once you go to ETS :)
