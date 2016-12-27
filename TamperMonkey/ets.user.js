@@ -326,7 +326,7 @@ const pasteRecord = ({
 .ets-day-not-filled-top TD {border-top: 1px dotted #999;}
 .ets-day-not-filled-bottom TD {border-bottom: 1px dotted #999}
 .ets-day-not-filled-top TD: nth-child(2) {text-align: right; font-weight: bold; color: #eea236}
-
+TR.TableRowClosed TD { color: #999}
         `);
 
     };
