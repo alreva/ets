@@ -213,7 +213,7 @@
 
     const rejectDueToApplicationError = (reject, message) => {
         reject({
-            reason: errorReasons.authorization,
+            reason: errorReasons.applicationError,
             message: message,
             reference: author
         });
@@ -335,6 +335,9 @@
             const url = "http://tfs.it.volvo.net:8080/tfs/Global3/SEGOT-eCom-CORE/_api/_wit/query?__v=3";
             const data = `wiql=SELECT [System.Id], [System.WorkItemType], [Microsoft.VSTS.Common.BacklogPriority], [Microsoft.VSTS.Common.Severity], [System.Title], [System.State], [Microsoft.VSTS.Scheduling.Effort], [Microsoft.VSTS.Scheduling.RemainingWork], [Volvo.Custom.eCOMCore.FixedDate], [System.AssignedTo], [Volvo.Custom.eCOMCore.CaseOrigin], [System.AreaPath], [System.IterationPath] FROM WorkItemLinks WHERE ([Source].[System.WorkItemType] IN GROUP 'Microsoft.RequirementCategory'  AND  [Source].[System.State] IN ('New', 'Approved', 'Committed', 'Done')) And ([System.Links.LinkType] = 'System.LinkTypes.Hierarchy-Forward') And ([Target].[System.WorkItemType] IN GROUP 'Microsoft.TaskCategory' AND ${iterationsAndAreasCondition}  AND  [Target].[System.State] IN ('To Do', 'In Progress', 'Done')  AND  [Target].[System.AssignedTo] = @me) ORDER BY [Microsoft.VSTS.Common.Severity] mode(Recursive,ReturnMatchingChildren)&runQuery=true&__RequestVerificationToken=${verificationToken}`
 
+            console.log('Querying TFS:');
+            console.log({url, query: data});
+
             GM_xmlhttpRequest({
                 method: "POST",
                 url: url,
@@ -350,6 +353,8 @@
                     }
 
                     const response = $.parseJSON(xhr.response);
+                    
+                    console.log(response);
 
                     if (response.error) {
                         rejectDueToApplicationError(reject,
