@@ -22,15 +22,15 @@
 const loadJsCss = (filename, filetype) => {
     var fileref = "";
     if (filetype == "js") {
-        fileref = document.createElement('script')
-        fileref.setAttribute("type", "text/javascript")
-        fileref.setAttribute("src", filename)
+        fileref = document.createElement('script');
+        fileref.setAttribute("type", "text/javascript");
+        fileref.setAttribute("src", filename);
     }
     else if (filetype == "css") {
-        fileref = document.createElement("link")
-        fileref.setAttribute("rel", "stylesheet")
-        fileref.setAttribute("type", "text/css")
-        fileref.setAttribute("href", filename)
+        fileref = document.createElement("link");
+        fileref.setAttribute("rel", "stylesheet");
+        fileref.setAttribute("type", "text/css");
+        fileref.setAttribute("href", filename);
     }
     if (typeof fileref != "undefined")
         document.getElementsByTagName("body")[0].appendChild(fileref);
@@ -123,6 +123,7 @@ const setSelectValueAndNotifyChanged = ($select, val) => {
         const optionFound = option.value == val || option.innerText == val;
         if (optionFound) {
             $(select).val(option.value);
+            notifyElementChange(select);
         }
         notifyOptionAdded($(select));
         return optionFound;
